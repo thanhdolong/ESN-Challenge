@@ -22,9 +22,9 @@ class MapScreenDatasource {
     func loadMonitoringLocations(){
         monitoringLocations = []
         // TODO: load pins from server (json).
-        monitoringLocations.append(Location(title: "Apple HQ", subtitle: "Lorem Ipsum", latitude: 37.3270145, longtitude: -122.0301))
-        monitoringLocations.append(Location(title: "Google HQ", subtitle: "Lorem Ipsum", latitude: 37.422, longtitude: -122.084058))
-        monitoringLocations.append(Location(title: "London", subtitle: "Lorem Ipsum", latitude: 51.50998, longtitude: 51.50998))
+        monitoringLocations.append(Location(title: "Apple HQ", type: "Lorem Ipsum", latitude: 37.3270145, longtitude: -122.0301))
+        monitoringLocations.append(Location(title: "Google HQ", type: "Lorem Ipsum", latitude: 37.422, longtitude: -122.084058))
+        monitoringLocations.append(Location(title: "London", type: "Lorem Ipsum", latitude: 51.50998, longtitude: -0.118092))
         mapScreenDatasourceDelegate?.didReceiveLocations(monitoringLocations: monitoringLocations)
     }
     

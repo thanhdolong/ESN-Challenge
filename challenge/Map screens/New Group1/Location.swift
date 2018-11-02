@@ -14,18 +14,18 @@ class Location: NSObject {
     // MARK: - Instance Properties
     let identifier: Int?
     let name: String
-    let text: String
+    let type: String
     let latitude: Double
     let longtitude: Double
     let location: CLLocation
     
     init(title: String,
-         subtitle: String,
+         type: String,
          latitude: Double,
          longtitude: Double) {
         self.identifier = nil
         self.name = title
-        self.text = subtitle
+        self.type = type
         self.latitude = latitude
         self.longtitude = longtitude
         self.location = CLLocation(latitude: latitude, longitude: longtitude)
@@ -47,7 +47,7 @@ extension Location: MKAnnotation {
     
     var subtitle: String? {
         get {
-            return self.text
+            return self.type
         }
     }
     

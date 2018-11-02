@@ -45,6 +45,7 @@ class MapScreenViewController: UIViewController {
         if CLLocationManager.locationServicesEnabled() {
             setupLocationManager()
             checkLocationAuthorization()
+            setupMapView()
         } else {
             // TODO: Show aler letting the user know they have to turn this on
         }
@@ -61,8 +62,11 @@ class MapScreenViewController: UIViewController {
             print("Not determined status. Show request for using location.")
             locationManager.requestAlwaysAuthorization()
         }
-        
+    }
+    
+    func setupMapView() {
         mapView.showsUserLocation = true
+        mapView.mapType = .standard
         mapView.userTrackingMode = .follow
     }
     
@@ -70,8 +74,9 @@ class MapScreenViewController: UIViewController {
 
 extension MapScreenViewController: MapScreenDatasourceDelegate {
     func didReceiveLocations(monitoringLocations: [Location]) {
+        mapView.addAnnotations(monitoringLocations)
         for monitoringLocation in monitoringLocations {
-            print("Monitoring location: \(monitoringLocation.title)")
+            print("Monitoring location: \(monitoringLocation.name)")
         }
     }
     
@@ -111,9 +116,10 @@ extension MapScreenViewController: CLLocationManagerDelegate {
     
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
+        /*
         guard let latestLocation = locations.last else {return}
         print(latestLocation.coordinate)
+         */
     }
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
