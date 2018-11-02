@@ -73,7 +73,7 @@ extension MapScreenViewController: MapScreenDatasourceDelegate {
         mapView.addAnnotations(monitoringLocations)
         
         for monitoringLocation in monitoringLocations {
-            mapView.addOverlay(MKCircle(center: monitoringLocation.coordinate, radius: 200000))
+            mapView.addOverlay(MKCircle(center: monitoringLocation.coordinate, radius: 100))
             print("Monitoring location: \(monitoringLocation.name)")
         }
     }
@@ -81,7 +81,7 @@ extension MapScreenViewController: MapScreenDatasourceDelegate {
 
 
 extension MapScreenViewController: MKMapViewDelegate {
-    
+
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKCircle {
             let circleRenderer = MKCircleRenderer(overlay: overlay)

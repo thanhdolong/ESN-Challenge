@@ -82,6 +82,7 @@
 		76264AE021764E8D0004624E /* challenge */ = {
 			isa = PBXGroup;
 			children = (
+				76264AEB21764E910004624E /* Assets.xcassets */,
 				76264AF021764E910004624E /* Info.plist */,
 				7651FE3B218760D300BA0205 /* App */,
 				7651FE3C218760DF00BA0205 /* Map screens */,
@@ -198,7 +199,6 @@
 		7651FE4B2187646A00BA0205 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				76264AEB21764E910004624E /* Assets.xcassets */,
 			);
 			name = Resources;
 			path = "Supporting Files/Resources";
