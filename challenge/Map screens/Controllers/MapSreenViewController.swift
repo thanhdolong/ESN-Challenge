@@ -13,7 +13,8 @@ import CoreLocation
 class MapScreenViewController: UIViewController {
     let regionInMeters: Double = 10000
     let locationManager: CLLocationManager = CLLocationManager()
-    var monitoringLocation: CLLocation?
+    let mapScreenDatasource: MapScreenDatasource = MapScreenDatasource()
+    var monitoringLocations: [Location]?
 
     
     @IBOutlet weak var mapView: MKMapView!
@@ -31,7 +32,8 @@ class MapScreenViewController: UIViewController {
         // let prague = CLLocation(latitude: location.latitude, longitude: location.longtitude)
 
         checkLocationServices()
-        loadMonitoringLocations()
+        mapScreenDatasource.mapScreenDatasourceDelegate = self
+        mapScreenDatasource.loadMonitoringLocations()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,9 +55,6 @@ class MapScreenViewController: UIViewController {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
     }
     
-    func loadMonitoringLocations(){
-        monitoringLocation = CLLocation(latitude: 37.3270145, longitude: -122.0301)
-    }
     
     func checkLocationAuthorization() {
         if CLLocationManager.authorizationStatus() == .notDetermined {
@@ -69,6 +68,15 @@ class MapScreenViewController: UIViewController {
     
 }
 
+extension MapScreenViewController: MapScreenDatasourceDelegate {
+    func didReceiveData(monitoringLocations: [Location]) {
+        for monitoringLocation in monitoringLocations {
+            print("Monitoring location: \(monitoringLocation.title)")
+        }
+    }
+    
+    
+}
 
 extension MapScreenViewController: CLLocationManagerDelegate {
     
@@ -86,11 +94,12 @@ extension MapScreenViewController: CLLocationManagerDelegate {
             showAlert(withTitle:"Warning", message: "Your geotification is saved but will only be activated once you grant Geotify permission to access the device location.")
         }
         
+        /*
         let  region = CLCircularRegion(center: (monitoringLocation?.coordinate)!, radius: 300, identifier: "Apple HQ")
         region.notifyOnEntry = true
         region.notifyOnExit = true
         locationManager.startMonitoring(for: region)
-        
+        */
         
         for region in locationManager.monitoredRegions {
             print("Monitored region: \(region.identifier)")
@@ -102,7 +111,7 @@ extension MapScreenViewController: CLLocationManagerDelegate {
     
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let latestLocation = locations.last else {return}
+        guard locations.last != nil else {return}
         //print(latestLocation.coordinate)
     }
     
