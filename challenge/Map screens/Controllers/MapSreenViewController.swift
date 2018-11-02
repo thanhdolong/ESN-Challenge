@@ -14,9 +14,7 @@ class MapScreenViewController: UIViewController {
     let regionInMeters: Double = 10000
     let locationManager: CLLocationManager = CLLocationManager()
     let mapScreenDatasource: MapScreenDatasource = MapScreenDatasource()
-    var monitoringLocations: [Location]?
 
-    
     @IBOutlet weak var mapView: MKMapView!
     
     static func initFromStoryboard() -> MapScreenViewController {
@@ -56,7 +54,6 @@ class MapScreenViewController: UIViewController {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
     }
     
-    
     func checkLocationAuthorization() {
         if CLLocationManager.authorizationStatus() == .notDetermined {
             print("Not determined status. Show request for using location.")
@@ -69,17 +66,33 @@ class MapScreenViewController: UIViewController {
         mapView.mapType = .standard
         mapView.userTrackingMode = .follow
     }
-    
 }
 
 extension MapScreenViewController: MapScreenDatasourceDelegate {
     func didReceiveLocations(monitoringLocations: [Location]) {
         mapView.addAnnotations(monitoringLocations)
+        
         for monitoringLocation in monitoringLocations {
+            mapView.addOverlay(MKCircle(center: monitoringLocation.coordinate, radius: 200000))
             print("Monitoring location: \(monitoringLocation.name)")
         }
     }
+}
+
+
+extension MapScreenViewController: MKMapViewDelegate {
     
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if overlay is MKCircle {
+            let circleRenderer = MKCircleRenderer(overlay: overlay)
+            circleRenderer.lineWidth = 1.0
+            circleRenderer.strokeColor = .purple
+            circleRenderer.fillColor = UIColor.purple.withAlphaComponent(0.4)
+            return circleRenderer
+        }
+        
+        return MKOverlayRenderer(overlay: overlay)
+    }
     
 }
 

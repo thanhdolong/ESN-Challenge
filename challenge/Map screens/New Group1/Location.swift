@@ -16,19 +16,19 @@ class Location: NSObject {
     let name: String
     let type: String
     let latitude: Double
-    let longtitude: Double
+    let longitude: Double
     let location: CLLocation
     
     init(title: String,
          type: String,
          latitude: Double,
-         longtitude: Double) {
+         longitude: Double) {
         self.identifier = nil
         self.name = title
         self.type = type
         self.latitude = latitude
-        self.longtitude = longtitude
-        self.location = CLLocation(latitude: latitude, longitude: longtitude)
+        self.longitude = longitude
+        self.location = CLLocation(latitude: latitude, longitude: longitude)
     }
 }
 
@@ -51,5 +51,4 @@ extension Location: MKAnnotation {
         }
     }
     
-
 }
