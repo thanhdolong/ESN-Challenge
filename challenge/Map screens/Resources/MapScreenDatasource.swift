@@ -11,7 +11,7 @@ import MapKit
 import CoreLocation
 
 protocol MapScreenDatasourceDelegate: class {
-    func didReceiveData(monitoringLocations: [Location])
+    func didReceiveLocations(monitoringLocations: [Location])
 }
 
 class MapScreenDatasource {
@@ -22,10 +22,10 @@ class MapScreenDatasource {
     func loadMonitoringLocations(){
         monitoringLocations = []
         // TODO: load pins from server (json).
-        monitoringLocations.append(Location(title: "Apple HQ", latitude: 37.3270145, longtitude: -122.0301))
-        monitoringLocations.append(Location(title: "Google HQ", latitude: 37.422, longtitude: -122.084058))
-        
-        mapScreenDatasourceDelegate?.didReceiveData(monitoringLocations: monitoringLocations)
+        monitoringLocations.append(Location(title: "Apple HQ", subtitle: "Lorem Ipsum", latitude: 37.3270145, longtitude: -122.0301))
+        monitoringLocations.append(Location(title: "Google HQ", subtitle: "Lorem Ipsum", latitude: 37.422, longtitude: -122.084058))
+        monitoringLocations.append(Location(title: "London", subtitle: "Lorem Ipsum", latitude: 51.50998, longtitude: 51.50998))
+        mapScreenDatasourceDelegate?.didReceiveLocations(monitoringLocations: monitoringLocations)
     }
     
 }

@@ -69,7 +69,7 @@ class MapScreenViewController: UIViewController {
 }
 
 extension MapScreenViewController: MapScreenDatasourceDelegate {
-    func didReceiveData(monitoringLocations: [Location]) {
+    func didReceiveLocations(monitoringLocations: [Location]) {
         for monitoringLocation in monitoringLocations {
             print("Monitoring location: \(monitoringLocation.title)")
         }
@@ -111,8 +111,9 @@ extension MapScreenViewController: CLLocationManagerDelegate {
     
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard locations.last != nil else {return}
-        //print(latestLocation.coordinate)
+        
+        guard let latestLocation = locations.last else {return}
+        print(latestLocation.coordinate)
     }
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
