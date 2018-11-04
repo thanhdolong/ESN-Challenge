@@ -11,26 +11,23 @@ import MapKit
 
 class Location: NSObject {
     
-    // MARK: - Instance Properties
-    let identifier: Int?
+    let identifier: String
     let name: String
     let type: String
     let latitude: Double
     let longitude: Double
     let location: CLLocation
-    let circle: MKOverlay
     
     init(title: String,
          type: String,
          latitude: Double,
          longitude: Double) {
-        self.identifier = nil
+        self.identifier = title
         self.name = title
         self.type = type
         self.latitude = latitude
         self.longitude = longitude
         self.location = CLLocation(latitude: latitude, longitude: longitude)
-        self.circle = MKCircle(center: self.location.coordinate, radius: 100)
     }
 }
 
