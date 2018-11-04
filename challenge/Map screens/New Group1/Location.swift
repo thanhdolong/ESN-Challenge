@@ -18,6 +18,7 @@ class Location: NSObject {
     let latitude: Double
     let longitude: Double
     let location: CLLocation
+    let circle: MKOverlay
     
     init(title: String,
          type: String,
@@ -29,6 +30,7 @@ class Location: NSObject {
         self.latitude = latitude
         self.longitude = longitude
         self.location = CLLocation(latitude: latitude, longitude: longitude)
+        self.circle = MKCircle(center: self.location.coordinate, radius: 100)
     }
 }
 
