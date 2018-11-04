@@ -27,9 +27,10 @@ class MapScreenDatasource {
     
     func loadData(){
         // TODO: load pins from server (json).
-        let location1 = Location(title: "Apple HQ", type: "Lorem Ipsum", latitude: 37.3270145, longitude: -122.0301)
-        let location2 = Location(title: "Google HQ", type: "Lorem Ipsum", latitude: 37.422, longitude: -122.084058)
-        let location3 = Location(title: "London", type: "Lorem Ipsum", latitude: 51.50998, longitude: -0.118092)
+
+        let location1 = Location(title: "Google HQ", type: "Lorem Ipsum", latitude: 37.422, longitude: -122.084058)
+        let location2 = Location(title: "London", type: "Lorem Ipsum", latitude: 51.50998, longitude: -0.118092)
+        let location3 = Location(title: "Apple HQ", type: "Lorem Ipsum", latitude: 37.3270145, longitude: -122.0301)
         
         locations.append(location1)
         monitoringLocations.append(location1)
