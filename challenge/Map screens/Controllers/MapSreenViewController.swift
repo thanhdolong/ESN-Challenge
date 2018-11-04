@@ -71,9 +71,11 @@ class MapScreenViewController: UIViewController {
 extension MapScreenViewController: MapScreenDatasourceDelegate {
     func didReceiveLocations(monitoringLocations: [Location]) {
         mapView.addAnnotations(monitoringLocations)
-        
+        mapView.addOverlays(monitoringLocations.compactMap({ (location) -> MKOverlay in
+            location.circle
+        }))
         for monitoringLocation in monitoringLocations {
-            mapView.addOverlay(MKCircle(center: monitoringLocation.coordinate, radius: 100))
+            //mapView.addOverlay(MKCircle(center: monitoringLocation.coordinate, radius: 100))
             print("Monitoring location: \(monitoringLocation.name)")
         }
     }
@@ -82,6 +84,30 @@ extension MapScreenViewController: MapScreenDatasourceDelegate {
 
 extension MapScreenViewController: MKMapViewDelegate {
 
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let identifier = "myMonitoringLocation"
+        if annotation is Location {
+            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
+            if annotationView == nil {
+                annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                annotationView?.canShowCallout = true
+                
+                // MARK: remove button for coordinator
+                /*
+                let removeButton = UIButton(type: .custom)
+                removeButton.frame = CGRect(x: 0, y: 0, width: 23, height: 23)
+                removeButton.setImage(UIImage(named: "DeleteGeotification")!, for: .normal)
+                annotationView?.leftCalloutAccessoryView = removeButton
+                */
+                
+            } else {
+                annotationView?.annotation = annotation
+            }
+            return annotationView
+        }
+        return nil
+    }
+    
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKCircle {
             let circleRenderer = MKCircleRenderer(overlay: overlay)
