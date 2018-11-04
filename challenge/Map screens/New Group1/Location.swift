@@ -7,21 +7,50 @@
 //
 
 import Foundation
+import MapKit
 
-class Location {
+class Location: NSObject {
     
     // MARK: - Instance Properties
     let identifier: Int?
-    let title: String
+    let name: String
+    let type: String
     let latitude: Double
-    let longtitude: Double
+    let longitude: Double
+    let location: CLLocation
+    let circle: MKOverlay
     
     init(title: String,
+         type: String,
          latitude: Double,
-         longtitude: Double) {
+         longitude: Double) {
         self.identifier = nil
-        self.title = title
+        self.name = title
+        self.type = type
         self.latitude = latitude
-        self.longtitude = longtitude
+        self.longitude = longitude
+        self.location = CLLocation(latitude: latitude, longitude: longitude)
+        self.circle = MKCircle(center: self.location.coordinate, radius: 100)
     }
+}
+
+extension Location: MKAnnotation {
+    var coordinate: CLLocationCoordinate2D {
+        get {
+            return location.coordinate
+        }
+    }
+  
+    var title: String? {
+        get {
+            return self.name
+        }
+    }
+    
+    var subtitle: String? {
+        get {
+            return self.type
+        }
+    }
+    
 }
