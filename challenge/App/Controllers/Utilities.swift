@@ -18,3 +18,11 @@ extension UIViewController {
         present(alert, animated: true, completion: nil)
     }
 }
+
+extension MKMapView {
+    func zoomToUserLocation() {
+        guard let coordinate = userLocation.location?.coordinate else { return }
+        let region = MKCoordinateRegion.init(center: coordinate, latitudinalMeters: 10000, longitudinalMeters: 10000)
+        setRegion(region, animated: true)
+    }
+}

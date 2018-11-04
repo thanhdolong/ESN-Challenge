@@ -76,15 +76,16 @@ class MapScreenViewController: UIViewController {
 
 extension MapScreenViewController: MapScreenDatasourceDelegate {
     func didReceiveMonitoringLocations(locations: [Location]) {
+        // Remove all regions were tracking before
+        for region in locationManager.monitoredRegions {
+            locationManager.stopMonitoring(for: region)
+        }
+        
         for monitoringLocation in locations {
             let  region = CLCircularRegion(center: monitoringLocation.coordinate, radius: 150, identifier: monitoringLocation.identifier)
             region.notifyOnEntry = true
             region.notifyOnExit = true
             locationManager.startMonitoring(for: region)
-        }
-        
-        for region in locationManager.monitoredRegions {
-            print("Monitored region: \(region.identifier)")
         }
     }
     
@@ -105,13 +106,13 @@ extension MapScreenViewController: MapScreenDatasourceDelegate {
 extension MapScreenViewController: MKMapViewDelegate {
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let identifier = "myMonitoringLocation"
+        let identifier = "place"
         if annotation is Location {
             var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
             if annotationView == nil {
                 annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
                 annotationView?.canShowCallout = true
-                
+                // annotationView?.image = UIImage(named: "esn_pin")!
                 // MARK: remove button for coordinator
                 /*
                 let removeButton = UIButton(type: .custom)
@@ -159,6 +160,10 @@ extension MapScreenViewController: CLLocationManagerDelegate {
             showAlert(withTitle:"Warning", message: "Your geotification is saved but will only be activated once you grant Geotify permission to access the device location.")
         }
 
+        
+        for region in locationManager.monitoredRegions {
+            print("Monitored region: \(region.identifier)")
+        }
     }
     
     
@@ -166,7 +171,7 @@ extension MapScreenViewController: CLLocationManagerDelegate {
         /*
         guard let latestLocation = locations.last else {return}
         print(latestLocation.coordinate)
-         */
+        */
     }
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
