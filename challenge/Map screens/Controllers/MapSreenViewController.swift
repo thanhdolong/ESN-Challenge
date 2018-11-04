@@ -28,10 +28,8 @@ class MapScreenViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         // let location = Location(title: "Prague", latitude: 50.08804, longtitude: 50.08804)
         // let prague = CLLocation(latitude: location.latitude, longitude: location.longtitude)
-
+        
         checkLocationServices()
-        mapScreenDatasource.mapScreenDatasourceDelegate = self
-        mapScreenDatasource.loadMonitoringLocations()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,6 +42,7 @@ class MapScreenViewController: UIViewController {
             setupLocationManager()
             checkLocationAuthorization()
             setupMapView()
+            loadMonitoringLocations()
         } else {
             // TODO: Show aler letting the user know they have to turn this on
         }
@@ -52,6 +51,8 @@ class MapScreenViewController: UIViewController {
     func setupLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.distanceFilter = 10
+        locationManager.startUpdatingLocation()
     }
     
     func checkLocationAuthorization() {
@@ -66,18 +67,37 @@ class MapScreenViewController: UIViewController {
         mapView.mapType = .standard
         mapView.userTrackingMode = .follow
     }
+    
+    func loadMonitoringLocations() {
+        mapScreenDatasource.mapScreenDatasourceDelegate = self
+        mapScreenDatasource.loadData()
+    }
 }
 
 extension MapScreenViewController: MapScreenDatasourceDelegate {
-    func didReceiveLocations(monitoringLocations: [Location]) {
-        mapView.addAnnotations(monitoringLocations)
-        mapView.addOverlays(monitoringLocations.compactMap({ (location) -> MKOverlay in
-            location.circle
-        }))
-        for monitoringLocation in monitoringLocations {
-            //mapView.addOverlay(MKCircle(center: monitoringLocation.coordinate, radius: 100))
-            print("Monitoring location: \(monitoringLocation.name)")
+    func didReceiveMonitoringLocations(locations: [Location]) {
+        for monitoringLocation in locations {
+            let  region = CLCircularRegion(center: monitoringLocation.coordinate, radius: 150, identifier: monitoringLocation.identifier)
+            region.notifyOnEntry = true
+            region.notifyOnExit = true
+            locationManager.startMonitoring(for: region)
         }
+        
+        for region in locationManager.monitoredRegions {
+            print("Monitored region: \(region.identifier)")
+        }
+    }
+    
+    func didReceiveLocations(locations: [Location]) {
+        mapView.addAnnotations(locations)
+        
+        for annotation in mapView.annotations {
+            print("Location: \(annotation.title! ?? "nil")")
+        }
+    }
+    
+    func didReceiveCircularOverlay(overlays: [MKOverlay]) {
+        mapView.addOverlays(overlays)
     }
 }
 
@@ -122,6 +142,7 @@ extension MapScreenViewController: MKMapViewDelegate {
     
 }
 
+// MARK: - Location Manager Delegate
 extension MapScreenViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -137,19 +158,6 @@ extension MapScreenViewController: CLLocationManagerDelegate {
         if CLLocationManager.authorizationStatus() != .authorizedAlways {
             showAlert(withTitle:"Warning", message: "Your geotification is saved but will only be activated once you grant Geotify permission to access the device location.")
         }
-        
-        /*
-        let  region = CLCircularRegion(center: (monitoringLocation?.coordinate)!, radius: 300, identifier: "Apple HQ")
-        region.notifyOnEntry = true
-        region.notifyOnExit = true
-        locationManager.startMonitoring(for: region)
-        */
-        
-        for region in locationManager.monitoredRegions {
-            print("Monitored region: \(region.identifier)")
-        }
-        
-        locationManager.startUpdatingLocation()
 
     }
     
@@ -170,10 +178,11 @@ extension MapScreenViewController: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("error \(error.localizedDescription)")
+        locationManager.stopUpdatingLocation()
+        print("Location Manager failed with the following error: \(error)")
     }
     
     func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
-        print("region error \(error.localizedDescription)")
+        print("Monitoring failed for region with identifier: \(region!.identifier)")
     }
 }
