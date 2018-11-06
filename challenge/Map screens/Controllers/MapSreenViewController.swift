@@ -108,11 +108,11 @@ extension MapScreenViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let identifier = "place"
         if annotation is Location {
-            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
+            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
             if annotationView == nil {
-                annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                annotationView?.image = UIImage(named: "customPin")
                 annotationView?.canShowCallout = true
-                // annotationView?.image = UIImage(named: "esn_pin")!
                 // MARK: remove button for coordinator
                 /*
                 let removeButton = UIButton(type: .custom)
@@ -120,7 +120,6 @@ extension MapScreenViewController: MKMapViewDelegate {
                 removeButton.setImage(UIImage(named: "DeleteGeotification")!, for: .normal)
                 annotationView?.leftCalloutAccessoryView = removeButton
                 */
-                
             } else {
                 annotationView?.annotation = annotation
             }
@@ -133,8 +132,8 @@ extension MapScreenViewController: MKMapViewDelegate {
         if overlay is MKCircle {
             let circleRenderer = MKCircleRenderer(overlay: overlay)
             circleRenderer.lineWidth = 1.0
-            circleRenderer.strokeColor = .purple
-            circleRenderer.fillColor = UIColor.purple.withAlphaComponent(0.4)
+            circleRenderer.strokeColor = UIColor(red: 56, green: 162, blue: 207)
+            circleRenderer.fillColor = UIColor(red: 56, green: 162, blue: 207).withAlphaComponent(0.4)
             return circleRenderer
         }
         
