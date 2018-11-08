@@ -13,12 +13,9 @@ import CoreLocation
 protocol MapScreenDatasourceDelegate: class {
     func didReceiveLocations(locations: [Location])
     func didReceiveMonitoringLocations(locations: [Location])
-    func didReceiveCircularOverlay(overlays: [MKOverlay])
 }
 
 class MapScreenDatasource {
-    
-    let radius: Double = 150
     var locations = [Location]()
     var circularOverlay = [MKOverlay]()
     var monitoringLocations = [Location]()
@@ -36,19 +33,14 @@ class MapScreenDatasource {
         
         locations.append(location1)
         monitoringLocations.append(location1)
-        circularOverlay.append(MKCircle(center: location1.coordinate, radius: radius))
         
         locations.append(location2)
-        circularOverlay.append(MKCircle(center: location2.coordinate, radius: radius))
         
         locations.append(location3)
-        circularOverlay.append(MKCircle(center: location3.coordinate, radius: radius))
         
         locations.append(location4)
-        circularOverlay.append(MKCircle(center: location4.coordinate, radius: radius))
-
+        
         mapScreenDatasourceDelegate?.didReceiveLocations(locations: locations)
-        mapScreenDatasourceDelegate?.didReceiveCircularOverlay(overlays: circularOverlay)
         mapScreenDatasourceDelegate?.didReceiveMonitoringLocations(locations: monitoringLocations)
     }
     

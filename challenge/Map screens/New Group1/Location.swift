@@ -8,26 +8,40 @@
 
 import Foundation
 import MapKit
+import RealmSwift
 
-class Location: NSObject {
+class Location: Object {
     
-    let identifier: String
-    let name: String
-    let type: String
-    let latitude: Double
-    let longitude: Double
-    let location: CLLocation
+    @objc dynamic var identifier: String = ""
+    @objc dynamic var name: String = ""
+    @objc dynamic var type: String = ""
+    @objc dynamic var latitude: Double = 0.0
+    @objc dynamic var longitude: Double = 0.0
     
-    init(title: String,
+    private let radius: Double = 150
+    
+    var location: CLLocation {
+        get{
+            return CLLocation(latitude: latitude, longitude: longitude)
+        }
+    }
+    
+    var circularOverlay: MKCircle {
+        get {
+            return MKCircle(center: location.coordinate, radius: radius)
+        }
+    }
+    
+    convenience init(title: String,
          type: String,
          latitude: Double,
          longitude: Double) {
+        self.init()
         self.identifier = title
         self.name = title
         self.type = type
         self.latitude = latitude
         self.longitude = longitude
-        self.location = CLLocation(latitude: latitude, longitude: longitude)
     }
 }
 
