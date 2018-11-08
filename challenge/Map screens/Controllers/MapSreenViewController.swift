@@ -91,6 +91,9 @@ extension MapScreenViewController: MapScreenDatasourceDelegate {
     
     func didReceiveLocations(locations: [Location]) {
         mapView.addAnnotations(locations)
+        mapView.addOverlays(locations.map({ (location) -> MKOverlay in
+            location.circularOverlay
+        }))
         
         for annotation in mapView.annotations {
             print("Location: \(annotation.title! ?? "nil")")
