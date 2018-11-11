@@ -12,8 +12,8 @@ import CoreLocation
 
 class MapScreenViewController: UIViewController {
     let regionInMeters: Double = 10000
-    let locationManager: CLLocationManager = CLLocationManager()
-    let mapScreenDatasource: MapScreenDatasource = MapScreenDatasource()
+    var locationManager: CLLocationManager!
+    var mapScreenDatasource: MapScreenDatasource!
 
     @IBOutlet weak var mapView: MKMapView!
     
@@ -70,7 +70,7 @@ class MapScreenViewController: UIViewController {
     
     func loadMonitoringLocations() {
         mapScreenDatasource.mapScreenDatasourceDelegate = self
-        mapScreenDatasource.loadData()
+        mapScreenDatasource.loadLocations()
     }
 }
 
@@ -86,6 +86,7 @@ extension MapScreenViewController: MapScreenDatasourceDelegate {
             region.notifyOnEntry = true
             region.notifyOnExit = true
             locationManager.startMonitoring(for: region)
+            print("Monitoring: \(monitoringLocation.name)")
         }
     }
     
@@ -94,7 +95,7 @@ extension MapScreenViewController: MapScreenDatasourceDelegate {
         mapView.addOverlays(locations.map({ (location) -> MKOverlay in
             location.circularOverlay
         }))
-        
+
         for annotation in mapView.annotations {
             print("Location: \(annotation.title! ?? "nil")")
         }
