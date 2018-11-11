@@ -8,40 +8,37 @@
 
 import Foundation
 import MapKit
-import RealmSwift
 
-class Location: Object {
+class Location: NSObject {
     
-    @objc dynamic var identifier: String = ""
-    @objc dynamic var name: String = ""
-    @objc dynamic var type: String = ""
-    @objc dynamic var latitude: Double = 0.0
-    @objc dynamic var longitude: Double = 0.0
-    
+    // MARK: - Instance Properties
     private let radius: Double = 150
+    let identifier: String
+    let name: String
+    let type: String
+    let latitude: Double
+    let longitude: Double
+    var location: CLLocation { return CLLocation(latitude: latitude, longitude: longitude) }
+    var circularOverlay: MKCircle { return MKCircle(center: location.coordinate, radius: radius) }
     
-    var location: CLLocation {
-        get{
-            return CLLocation(latitude: latitude, longitude: longitude)
-        }
-    }
     
-    var circularOverlay: MKCircle {
-        get {
-            return MKCircle(center: location.coordinate, radius: radius)
-        }
-    }
-    
-    convenience init(title: String,
+    init(title: String,
          type: String,
          latitude: Double,
          longitude: Double) {
-        self.init()
         self.identifier = title
         self.name = title
         self.type = type
         self.latitude = latitude
         self.longitude = longitude
+    }
+    
+    init(location: LocationObject) {
+        self.identifier = location.name
+        self.name = location.name
+        self.type = location.type
+        self.latitude = location.latitude
+        self.longitude = location.longitude
     }
 }
 
@@ -51,17 +48,17 @@ extension Location: MKAnnotation {
             return location.coordinate
         }
     }
-  
+
     var title: String? {
         get {
             return self.name
         }
     }
-    
+
     var subtitle: String? {
         get {
             return self.type
         }
     }
-    
+
 }
