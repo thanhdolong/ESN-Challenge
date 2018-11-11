@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CoreLocation
+import SwinjectStoryboard
 
 class MainViewController: UIViewController {
     
@@ -25,7 +27,6 @@ class MainViewController: UIViewController {
         print("show map")
         let viewController = MapScreenViewController.initFromStoryboard()
         navigationController?.pushViewController(viewController, animated: true)
-        
     }
     
 }
