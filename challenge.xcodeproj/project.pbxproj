@@ -8,27 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		7615079A217693090065FA09 /* to apple and back.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 76150799217693090065FA09 /* to apple and back.gpx */; };
-		761AC4202197858300B9FD00 /* Swinject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 761AC41E2197858300B9FD00 /* Swinject.framework */; };
-		761AC4212197858300B9FD00 /* SwinjectStoryboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 761AC41F2197858300B9FD00 /* SwinjectStoryboard.framework */; };
-		761AC423219786F700B9FD00 /* SwinjectStoryboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761AC422219786F700B9FD00 /* SwinjectStoryboard+Extension.swift */; };
-		761AC425219788A500B9FD00 /* SwinjectAutoregistration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 761AC424219788A500B9FD00 /* SwinjectAutoregistration.framework */; };
-		761AC4272197A32A00B9FD00 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761AC4262197A32A00B9FD00 /* Location.swift */; };
-		761AC4292197AD8500B9FD00 /* FetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761AC4282197AD8500B9FD00 /* FetchRequest.swift */; };
 		76264AE221764E8D0004624E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76264AE121764E8D0004624E /* AppDelegate.swift */; };
 		76264AE421764E8D0004624E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76264AE321764E8D0004624E /* MainViewController.swift */; };
 		76264AE721764E8D0004624E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76264AE521764E8D0004624E /* Main.storyboard */; };
 		76264AEA21764E8D0004624E /* challenge.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 76264AE821764E8D0004624E /* challenge.xcdatamodeld */; };
 		76264AEC21764E910004624E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76264AEB21764E910004624E /* Assets.xcassets */; };
 		76264AEF21764E910004624E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76264AED21764E910004624E /* LaunchScreen.storyboard */; };
-		763804522195BD4800DE7035 /* MapScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763804512195BD4800DE7035 /* MapScreenViewModel.swift */; };
 		763BF1AA218B9734006A62A8 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763BF1A9218B9734006A62A8 /* Utilities.swift */; };
 		763BF1AC218BA6F6006A62A8 /* MapScreenDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763BF1AB218BA6F6006A62A8 /* MapScreenDatasource.swift */; };
 		7651FE732187695200BA0205 /* MapScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7651FE722187695200BA0205 /* MapScreen.storyboard */; };
 		7651FE752187704700BA0205 /* MapSreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7651FE742187704700BA0205 /* MapSreenViewController.swift */; };
-		766059892188838F0060E4A8 /* LocationObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766059882188838F0060E4A8 /* LocationObject.swift */; };
-		768AB3F6219476D500FFCFD8 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 768AB3F4219476D500FFCFD8 /* Realm.framework */; };
-		768AB3F7219476D500FFCFD8 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 768AB3F5219476D500FFCFD8 /* RealmSwift.framework */; };
-		768AB3FA2194D48E00FFCFD8 /* databaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768AB3F92194D48E00FFCFD8 /* databaseManager.swift */; };
+		766059892188838F0060E4A8 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766059882188838F0060E4A8 /* Location.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -45,12 +35,6 @@
 
 /* Begin PBXFileReference section */
 		76150799217693090065FA09 /* to apple and back.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "to apple and back.gpx"; sourceTree = "<group>"; };
-		761AC41E2197858300B9FD00 /* Swinject.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Swinject.framework; path = Carthage/Build/iOS/Swinject.framework; sourceTree = "<group>"; };
-		761AC41F2197858300B9FD00 /* SwinjectStoryboard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwinjectStoryboard.framework; path = Carthage/Build/iOS/SwinjectStoryboard.framework; sourceTree = "<group>"; };
-		761AC422219786F700B9FD00 /* SwinjectStoryboard+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwinjectStoryboard+Extension.swift"; sourceTree = "<group>"; };
-		761AC424219788A500B9FD00 /* SwinjectAutoregistration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwinjectAutoregistration.framework; path = Carthage/Build/iOS/SwinjectAutoregistration.framework; sourceTree = "<group>"; };
-		761AC4262197A32A00B9FD00 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
-		761AC4282197AD8500B9FD00 /* FetchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRequest.swift; sourceTree = "<group>"; };
 		76264ADE21764E8D0004624E /* challenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = challenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76264AE121764E8D0004624E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		76264AE321764E8D0004624E /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -59,16 +43,12 @@
 		76264AEB21764E910004624E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		76264AEE21764E910004624E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		76264AF021764E910004624E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		763804512195BD4800DE7035 /* MapScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapScreenViewModel.swift; sourceTree = "<group>"; };
 		763BF1A7218B4F2D006A62A8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		763BF1A9218B9734006A62A8 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		763BF1AB218BA6F6006A62A8 /* MapScreenDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapScreenDatasource.swift; sourceTree = "<group>"; };
 		7651FE722187695200BA0205 /* MapScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MapScreen.storyboard; sourceTree = "<group>"; };
 		7651FE742187704700BA0205 /* MapSreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSreenViewController.swift; sourceTree = "<group>"; };
-		766059882188838F0060E4A8 /* LocationObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationObject.swift; sourceTree = "<group>"; };
-		768AB3F4219476D500FFCFD8 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
-		768AB3F5219476D500FFCFD8 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
-		768AB3F92194D48E00FFCFD8 /* databaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = databaseManager.swift; sourceTree = "<group>"; };
+		766059882188838F0060E4A8 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,11 +56,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				761AC425219788A500B9FD00 /* SwinjectAutoregistration.framework in Frameworks */,
-				761AC4202197858300B9FD00 /* Swinject.framework in Frameworks */,
-				761AC4212197858300B9FD00 /* SwinjectStoryboard.framework in Frameworks */,
-				768AB3F6219476D500FFCFD8 /* Realm.framework in Frameworks */,
-				768AB3F7219476D500FFCFD8 /* RealmSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,8 +84,9 @@
 			children = (
 				76264AEB21764E910004624E /* Assets.xcassets */,
 				76264AF021764E910004624E /* Info.plist */,
-				7651FE3B218760D300BA0205 /* Shared */,
+				7651FE3B218760D300BA0205 /* App */,
 				7651FE3C218760DF00BA0205 /* Map screens */,
+				7651FE3A218760A800BA0205 /* Networking */,
 			);
 			path = challenge;
 			sourceTree = "<group>";
@@ -118,31 +94,9 @@
 		76264AF621764EC30004624E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				761AC424219788A500B9FD00 /* SwinjectAutoregistration.framework */,
-				761AC41E2197858300B9FD00 /* Swinject.framework */,
-				761AC41F2197858300B9FD00 /* SwinjectStoryboard.framework */,
-				768AB3F4219476D500FFCFD8 /* Realm.framework */,
-				768AB3F5219476D500FFCFD8 /* RealmSwift.framework */,
 				763BF1A7218B4F2D006A62A8 /* MapKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		763804502195BD1D00DE7035 /* Datasource */ = {
-			isa = PBXGroup;
-			children = (
-				763BF1AB218BA6F6006A62A8 /* MapScreenDatasource.swift */,
-			);
-			path = Datasource;
-			sourceTree = "<group>";
-		};
-		763BF1D22191D2C4006A62A8 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				763BF1A9218B9734006A62A8 /* Utilities.swift */,
-				761AC422219786F700B9FD00 /* SwinjectStoryboard+Extension.swift */,
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		7651FE3A218760A800BA0205 /* Networking */ = {
@@ -152,28 +106,25 @@
 			path = Networking;
 			sourceTree = "<group>";
 		};
-		7651FE3B218760D300BA0205 /* Shared */ = {
+		7651FE3B218760D300BA0205 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				7651FE50218766D200BA0205 /* Views */,
 				7651FE402187630600BA0205 /* AppDelegate */,
 				7651FE442187638200BA0205 /* Controllers */,
-				768AB3F82194D34200FFCFD8 /* Database */,
-				763BF1D22191D2C4006A62A8 /* Extensions */,
 				7651FE48218763D100BA0205 /* Models */,
-				7651FE3A218760A800BA0205 /* Networking */,
+				7651FE4B2187646A00BA0205 /* Resources */,
 				7651FE492187640600BA0205 /* Supporting Files */,
-				7651FE50218766D200BA0205 /* Views */,
 			);
-			path = Shared;
+			path = App;
 			sourceTree = "<group>";
 		};
 		7651FE3C218760DF00BA0205 /* Map screens */ = {
 			isa = PBXGroup;
 			children = (
-				763804502195BD1D00DE7035 /* Datasource */,
 				7651FE432187636800BA0205 /* Controllers */,
 				7651FE422187636700BA0205 /* Models */,
-				7651FE4C2187648500BA0205 /* ViewModels */,
+				7651FE4C2187648500BA0205 /* Resources */,
 				7651FE4A2187641300BA0205 /* Supporting Files */,
 				7651FE412187636500BA0205 /* Views */,
 			);
@@ -199,8 +150,7 @@
 		7651FE422187636700BA0205 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				766059882188838F0060E4A8 /* LocationObject.swift */,
-				761AC4262197A32A00B9FD00 /* Location.swift */,
+				766059882188838F0060E4A8 /* Location.swift */,
 			);
 			name = Models;
 			path = "New Group1";
@@ -218,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				76264AE321764E8D0004624E /* MainViewController.swift */,
+				763BF1A9218B9734006A62A8 /* Utilities.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -245,12 +196,20 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		7651FE4C2187648500BA0205 /* ViewModels */ = {
+		7651FE4B2187646A00BA0205 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				763804512195BD4800DE7035 /* MapScreenViewModel.swift */,
 			);
-			path = ViewModels;
+			name = Resources;
+			path = "Supporting Files/Resources";
+			sourceTree = "<group>";
+		};
+		7651FE4C2187648500BA0205 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				763BF1AB218BA6F6006A62A8 /* MapScreenDatasource.swift */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		7651FE50218766D200BA0205 /* Views */ = {
@@ -260,15 +219,6 @@
 				76264AED21764E910004624E /* LaunchScreen.storyboard */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		768AB3F82194D34200FFCFD8 /* Database */ = {
-			isa = PBXGroup;
-			children = (
-				768AB3F92194D48E00FFCFD8 /* databaseManager.swift */,
-				761AC4282197AD8500B9FD00 /* FetchRequest.swift */,
-			);
-			path = Database;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -281,7 +231,6 @@
 				76264ADA21764E8D0004624E /* Sources */,
 				76264ADB21764E8D0004624E /* Frameworks */,
 				76264ADC21764E8D0004624E /* Resources */,
-				768AB3F32194756D00FFCFD8 /* Carthage */,
 			);
 			buildRules = (
 				7651FE4D218765C000BA0205 /* PBXBuildRule */,
@@ -349,46 +298,15 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		768AB3F32194756D00FFCFD8 /* Carthage */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Realm.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/RealmSwift.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Swinject.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SwinjectAutoregistration.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SwinjectStoryboard.framework",
-			);
-			name = Carthage;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/usr/local/bin/carthage copy-frameworks\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		76264ADA21764E8D0004624E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				761AC4292197AD8500B9FD00 /* FetchRequest.swift in Sources */,
-				768AB3FA2194D48E00FFCFD8 /* databaseManager.swift in Sources */,
-				761AC4272197A32A00B9FD00 /* Location.swift in Sources */,
 				763BF1AA218B9734006A62A8 /* Utilities.swift in Sources */,
 				76264AE421764E8D0004624E /* MainViewController.swift in Sources */,
 				76264AEA21764E8D0004624E /* challenge.xcdatamodeld in Sources */,
-				763804522195BD4800DE7035 /* MapScreenViewModel.swift in Sources */,
-				761AC423219786F700B9FD00 /* SwinjectStoryboard+Extension.swift in Sources */,
-				766059892188838F0060E4A8 /* LocationObject.swift in Sources */,
+				766059892188838F0060E4A8 /* Location.swift in Sources */,
 				76264AE221764E8D0004624E /* AppDelegate.swift in Sources */,
 				7651FE752187704700BA0205 /* MapSreenViewController.swift in Sources */,
 				763BF1AC218BA6F6006A62A8 /* MapScreenDatasource.swift in Sources */,
@@ -539,10 +457,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KW278547Y4;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
 				INFOPLIST_FILE = challenge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -561,10 +475,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KW278547Y4;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-				);
 				INFOPLIST_FILE = challenge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
