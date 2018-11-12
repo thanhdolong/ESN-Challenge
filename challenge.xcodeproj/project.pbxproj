@@ -24,6 +24,7 @@
 		763BF1AC218BA6F6006A62A8 /* MapScreenDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763BF1AB218BA6F6006A62A8 /* MapScreenDatasource.swift */; };
 		7644FDC82199D9D900E89FAF /* MapScreen+CLLocationManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7644FDC72199D9D900E89FAF /* MapScreen+CLLocationManagerDelegate.swift */; };
 		7644FDCA2199DA9200E89FAF /* MapScreen+MKMapViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7644FDC92199DA9200E89FAF /* MapScreen+MKMapViewDelegate.swift */; };
+		7644FDCC2199E59100E89FAF /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7644FDCB2199E59100E89FAF /* Alamofire.framework */; };
 		7651FE732187695200BA0205 /* MapScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7651FE722187695200BA0205 /* MapScreen.storyboard */; };
 		7651FE752187704700BA0205 /* MapSreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7651FE742187704700BA0205 /* MapSreenViewController.swift */; };
 		766059892188838F0060E4A8 /* LocationObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766059882188838F0060E4A8 /* LocationObject.swift */; };
@@ -65,6 +66,7 @@
 		763BF1AB218BA6F6006A62A8 /* MapScreenDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapScreenDatasource.swift; sourceTree = "<group>"; };
 		7644FDC72199D9D900E89FAF /* MapScreen+CLLocationManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapScreen+CLLocationManagerDelegate.swift"; sourceTree = "<group>"; };
 		7644FDC92199DA9200E89FAF /* MapScreen+MKMapViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapScreen+MKMapViewDelegate.swift"; sourceTree = "<group>"; };
+		7644FDCB2199E59100E89FAF /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		7651FE722187695200BA0205 /* MapScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MapScreen.storyboard; sourceTree = "<group>"; };
 		7651FE742187704700BA0205 /* MapSreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSreenViewController.swift; sourceTree = "<group>"; };
 		766059882188838F0060E4A8 /* LocationObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationObject.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7644FDCC2199E59100E89FAF /* Alamofire.framework in Frameworks */,
 				761AC425219788A500B9FD00 /* SwinjectAutoregistration.framework in Frameworks */,
 				761AC4202197858300B9FD00 /* Swinject.framework in Frameworks */,
 				761AC4212197858300B9FD00 /* SwinjectStoryboard.framework in Frameworks */,
@@ -121,6 +124,7 @@
 		76264AF621764EC30004624E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7644FDCB2199E59100E89FAF /* Alamofire.framework */,
 				761AC424219788A500B9FD00 /* SwinjectAutoregistration.framework */,
 				761AC41E2197858300B9FD00 /* Swinject.framework */,
 				761AC41F2197858300B9FD00 /* SwinjectStoryboard.framework */,
@@ -224,9 +228,9 @@
 		7651FE432187636800BA0205 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				7651FE742187704700BA0205 /* MapSreenViewController.swift */,
 				7644FDC72199D9D900E89FAF /* MapScreen+CLLocationManagerDelegate.swift */,
 				7644FDC92199DA9200E89FAF /* MapScreen+MKMapViewDelegate.swift */,
+				7651FE742187704700BA0205 /* MapSreenViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -357,6 +361,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Swinject.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwinjectAutoregistration.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwinjectStoryboard.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
 			);
 			name = Carthage;
 			outputFileListPaths = (
