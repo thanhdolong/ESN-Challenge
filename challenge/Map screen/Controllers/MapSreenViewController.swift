@@ -36,8 +36,10 @@ class MapScreenViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
-    
-    func checkLocationServices() {
+}
+
+extension MapScreenViewController {
+    private func checkLocationServices() {
         if CLLocationManager.locationServicesEnabled() {
             setupLocationManager()
             checkLocationAuthorization()
@@ -48,27 +50,27 @@ class MapScreenViewController: UIViewController {
         }
     }
     
-    func setupLocationManager() {
+    private func setupLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = 10
         locationManager.startUpdatingLocation()
     }
     
-    func checkLocationAuthorization() {
+    private func checkLocationAuthorization() {
         if CLLocationManager.authorizationStatus() == .notDetermined {
             print("Not determined status. Show request for using location.")
             locationManager.requestAlwaysAuthorization()
         }
     }
     
-    func setupMapView() {
+    private func setupMapView() {
         mapView.showsUserLocation = true
         mapView.mapType = .standard
         mapView.userTrackingMode = .follow
     }
     
-    func loadMonitoringLocations() {
+    private func loadMonitoringLocations() {
         mapScreenDatasource.mapScreenDatasourceDelegate = self
         mapScreenDatasource.loadLocations()
     }
@@ -103,94 +105,5 @@ extension MapScreenViewController: MapScreenDatasourceDelegate {
     
     func didReceiveCircularOverlay(overlays: [MKOverlay]) {
         mapView.addOverlays(overlays)
-    }
-}
-
-
-extension MapScreenViewController: MKMapViewDelegate {
-
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let identifier = "place"
-        if annotation is Location {
-            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
-            if annotationView == nil {
-                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-                annotationView?.image = UIImage(named: "customPin")
-                annotationView?.canShowCallout = true
-                // MARK: remove button for coordinator
-                /*
-                let removeButton = UIButton(type: .custom)
-                removeButton.frame = CGRect(x: 0, y: 0, width: 23, height: 23)
-                removeButton.setImage(UIImage(named: "DeleteGeotification")!, for: .normal)
-                annotationView?.leftCalloutAccessoryView = removeButton
-                */
-            } else {
-                annotationView?.annotation = annotation
-            }
-            return annotationView
-        }
-        return nil
-    }
-    
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        if overlay is MKCircle {
-            let circleRenderer = MKCircleRenderer(overlay: overlay)
-            circleRenderer.lineWidth = 1.0
-            circleRenderer.strokeColor = UIColor(red: 56, green: 162, blue: 207)
-            circleRenderer.fillColor = UIColor(red: 56, green: 162, blue: 207).withAlphaComponent(0.4)
-            return circleRenderer
-        }
-        
-        return MKOverlayRenderer(overlay: overlay)
-    }
-    
-}
-
-// MARK: - Location Manager Delegate
-extension MapScreenViewController: CLLocationManagerDelegate {
-    
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-
-            
-        // MARK - make sure region monitoring is supported
-        if !CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
-            showAlert(withTitle:"Error", message: "Geofencing is not supported on this device!")
-            return
-        }
-        
-        // Mark: Monitoring must have always location
-        if CLLocationManager.authorizationStatus() != .authorizedAlways {
-            showAlert(withTitle:"Warning", message: "Your geotification is saved but will only be activated once you grant Geotify permission to access the device location.")
-        }
-
-        
-        for region in locationManager.monitoredRegions {
-            print("Monitored region: \(region.identifier)")
-        }
-    }
-    
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        /*
-        guard let latestLocation = locations.last else {return}
-        print(latestLocation.coordinate)
-        */
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("enter to region")
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        print("exit region")
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        locationManager.stopUpdatingLocation()
-        print("Location Manager failed with the following error: \(error)")
-    }
-    
-    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
-        print("Monitoring failed for region with identifier: \(region!.identifier)")
     }
 }
