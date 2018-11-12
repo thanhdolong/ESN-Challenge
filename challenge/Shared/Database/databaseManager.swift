@@ -18,8 +18,6 @@ enum DatabaseError: Error {
 }
 
 final class Database {
-    static let context = Database()
-    
     private let realm: Realm
     init(realm: Realm = try! Realm()) {
         self.realm = realm
