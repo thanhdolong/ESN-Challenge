@@ -1,4 +1,5 @@
-# github "realm/realm-cocoa"
-# github "Swinject/Swinject"
-# github "Swinject/SwinjectStoryboard"
+github "realm/realm-cocoa"
+github "Swinject/Swinject"
+github "Swinject/SwinjectStoryboard"
 github "Swinject/SwinjectAutoregistration"
+github "Alamofire/Alamofire"
