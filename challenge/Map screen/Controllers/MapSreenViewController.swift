@@ -26,14 +26,7 @@ class MapScreenViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        Alamofire.request("https://jsonplaceholder.typicode.com/users").responseJSON { (response) in
-            print("> URL request: \(response.request!)")  // original URL request
-            print("> URL response: \(response.response!)") // URL response
-            print("> server data: \(response.data!)")     // server data
-            print("> result: \(response.result)")   // result of response serialization
-        }
-
+        
         // Do any additional setup after loading the view, typically from a nib.
         // let location = Location(title: "Prague", latitude: 50.08804, longtitude: 50.08804)
         // let prague = CLLocation(latitude: location.latitude, longitude: location.longtitude)

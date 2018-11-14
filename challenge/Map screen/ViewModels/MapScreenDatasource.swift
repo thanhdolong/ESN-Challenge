@@ -17,6 +17,8 @@ protocol MapScreenDatasourceDelegate: class {
 }
 
 class MapScreenDatasource {
+    let sandboxAPI: SandboxAPI = SandboxAPI()
+    let locationAPI: LocationAPI = LocationAPI()
     var locations = [LocationObject]()
     var monitoringLocations = [Location]()
     var hash: String = "hash"
@@ -31,10 +33,21 @@ class MapScreenDatasource {
 extension MapScreenDatasource {
     func loadLocations(){
         // TODO: load pins from server (json).
+//        sandboxAPI.getStatus(id: 403, completion: { (posts, error) in
+//            print("1> zde je status: \(error ?? NetworkError.unsuccessError("No error"))")
+//            print("1> zde jsou zpráva: \(posts ?? "empty")")
+//
+//        })
         
-        // 1) check server -> Does hash is saved in cellphone OR does server has new hash.
-        print(Realm.Configuration.defaultConfiguration.fileURL!)
-        print("> Initizial database: \(database.fetch(with: Location.all))")
+        locationAPI.geAllLocations { (posts, error) in
+            guard let posts = posts else {
+                if let error = error {
+                     print("Error: \(error)")
+                }
+                return
+            }
+            print("\(posts)")
+        }
         
         if hash != "hash" {
             print("Delete Realm Database")
