@@ -31,15 +31,15 @@ public final class NetworkClient {
     }()
     
     
-    func requestFor(resourceUrl: URL, method: Alamofire.HTTPMethod, parametersBody: [String: Any]?, parametersHead: [String: String]?, completion: @escaping(DataResponse<Any>) -> Void) {
+    func requestFor(resourceUrl: URL, method: Alamofire.HTTPMethod, parametersBody: [String: Any]?, parametersHead: [String: String]?, completion: @escaping(DataResponse<Any>, Result<Any>) -> Void) {
         var headers = [String : String]()
         if let parametersHead = parametersHead {
             headers = parametersHead
         }
 
         let encoding = method == .get ? URLEncoding(destination: .queryString) : URLEncoding.default
-        sessionManager.request(resourceUrl, method: method, parameters: parametersBody, encoding: encoding, headers: headers).responseJSON { (response) in
-            completion(response)
+        sessionManager.request(resourceUrl, method: method, parameters: parametersBody, encoding: encoding, headers: headers).validate().responseJSON { (response) in
+            completion(response, response.result)
         }
     }
 

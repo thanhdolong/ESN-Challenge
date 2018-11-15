@@ -29,6 +29,7 @@ public enum SandboxEndPoint {
 }
 
 extension SandboxEndPoint: EndPointType {
+
     fileprivate var environmentBaseURL : String {
         switch NetworkClient.environment {
         case .production: return "https://jsonplaceholder.typicode.com/"

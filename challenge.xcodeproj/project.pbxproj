@@ -31,11 +31,13 @@
 		7644FDD9219A479700E89FAF /* LocationEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7644FDD8219A479700E89FAF /* LocationEndPoint.swift */; };
 		7644FDDD219A47FF00E89FAF /* EndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7644FDDC219A47FF00E89FAF /* EndPoint.swift */; };
 		7644FDDF219A49EC00E89FAF /* NetworkEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7644FDDE219A49EC00E89FAF /* NetworkEnvironment.swift */; };
-		7644FDE1219AECB000E89FAF /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7644FDE0219AECB000E89FAF /* Router.swift */; };
+		7644FDE1219AECB000E89FAF /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7644FDE0219AECB000E89FAF /* Manager.swift */; };
 		7644FDE4219B131500E89FAF /* LocationAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7644FDE3219B131500E89FAF /* LocationAPI.swift */; };
 		7644FDE6219B78D200E89FAF /* SandboxEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7644FDE5219B78D200E89FAF /* SandboxEndPoint.swift */; };
 		7644FDE8219B78E100E89FAF /* SandboxAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7644FDE7219B78E100E89FAF /* SandboxAPI.swift */; };
 		7644FDEA219B962C00E89FAF /* StatusEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7644FDE9219B962C00E89FAF /* StatusEndPoint.swift */; };
+		7644FDEC219C64FB00E89FAF /* Unbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7644FDEB219C64FA00E89FAF /* Unbox.framework */; };
+		7644FDF0219CBADD00E89FAF /* ApiResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7644FDEF219CBADD00E89FAF /* ApiResult.swift */; };
 		7651FE732187695200BA0205 /* MapScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7651FE722187695200BA0205 /* MapScreen.storyboard */; };
 		7651FE752187704700BA0205 /* MapSreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7651FE742187704700BA0205 /* MapSreenViewController.swift */; };
 		766059892188838F0060E4A8 /* LocationObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766059882188838F0060E4A8 /* LocationObject.swift */; };
@@ -84,11 +86,13 @@
 		7644FDD8219A479700E89FAF /* LocationEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationEndPoint.swift; sourceTree = "<group>"; };
 		7644FDDC219A47FF00E89FAF /* EndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPoint.swift; sourceTree = "<group>"; };
 		7644FDDE219A49EC00E89FAF /* NetworkEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkEnvironment.swift; sourceTree = "<group>"; };
-		7644FDE0219AECB000E89FAF /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		7644FDE0219AECB000E89FAF /* Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
 		7644FDE3219B131500E89FAF /* LocationAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAPI.swift; sourceTree = "<group>"; };
 		7644FDE5219B78D200E89FAF /* SandboxEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxEndPoint.swift; sourceTree = "<group>"; };
 		7644FDE7219B78E100E89FAF /* SandboxAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxAPI.swift; sourceTree = "<group>"; };
 		7644FDE9219B962C00E89FAF /* StatusEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusEndPoint.swift; sourceTree = "<group>"; };
+		7644FDEB219C64FA00E89FAF /* Unbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Unbox.framework; path = Carthage/Build/iOS/Unbox.framework; sourceTree = "<group>"; };
+		7644FDEF219CBADD00E89FAF /* ApiResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiResult.swift; sourceTree = "<group>"; };
 		7651FE722187695200BA0205 /* MapScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MapScreen.storyboard; sourceTree = "<group>"; };
 		7651FE742187704700BA0205 /* MapSreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSreenViewController.swift; sourceTree = "<group>"; };
 		766059882188838F0060E4A8 /* LocationObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationObject.swift; sourceTree = "<group>"; };
@@ -102,6 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7644FDEC219C64FB00E89FAF /* Unbox.framework in Frameworks */,
 				7644FDCC2199E59100E89FAF /* Alamofire.framework in Frameworks */,
 				761AC425219788A500B9FD00 /* SwinjectAutoregistration.framework in Frameworks */,
 				761AC4202197858300B9FD00 /* Swinject.framework in Frameworks */,
@@ -146,6 +151,7 @@
 		76264AF621764EC30004624E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7644FDEB219C64FA00E89FAF /* Unbox.framework */,
 				7644FDCB2199E59100E89FAF /* Alamofire.framework */,
 				761AC424219788A500B9FD00 /* SwinjectAutoregistration.framework */,
 				761AC41E2197858300B9FD00 /* Swinject.framework */,
@@ -198,7 +204,8 @@
 				7644FDD1219A3C7100E89FAF /* Int+HTTPStatusCode.swift */,
 				7644FDCE219A3BE700E89FAF /* NetworkError.swift */,
 				7644FDDC219A47FF00E89FAF /* EndPoint.swift */,
-				7644FDE0219AECB000E89FAF /* Router.swift */,
+				7644FDE0219AECB000E89FAF /* Manager.swift */,
+				7644FDEF219CBADD00E89FAF /* ApiResult.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -419,6 +426,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/SwinjectAutoregistration.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwinjectStoryboard.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Unbox.framework",
 			);
 			name = Carthage;
 			outputFileListPaths = (
@@ -448,10 +456,11 @@
 				7644FDD9219A479700E89FAF /* LocationEndPoint.swift in Sources */,
 				76264AEA21764E8D0004624E /* challenge.xcdatamodeld in Sources */,
 				7644FDE8219B78E100E89FAF /* SandboxAPI.swift in Sources */,
+				7644FDF0219CBADD00E89FAF /* ApiResult.swift in Sources */,
 				7644FDE4219B131500E89FAF /* LocationAPI.swift in Sources */,
 				7644FDDD219A47FF00E89FAF /* EndPoint.swift in Sources */,
 				7644FDDF219A49EC00E89FAF /* NetworkEnvironment.swift in Sources */,
-				7644FDE1219AECB000E89FAF /* Router.swift in Sources */,
+				7644FDE1219AECB000E89FAF /* Manager.swift in Sources */,
 				761AC423219786F700B9FD00 /* SwinjectStoryboard+Extension.swift in Sources */,
 				766059892188838F0060E4A8 /* LocationObject.swift in Sources */,
 				76264AE221764E8D0004624E /* AppDelegate.swift in Sources */,
