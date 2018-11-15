@@ -1,5 +1,5 @@
 //
-//  Router
+//  Manager.swift
 //  challenge
 //
 //  Created by Thành Đỗ Long on 13/11/2018.
@@ -8,36 +8,39 @@
 
 import Foundation
 import Alamofire
+import Unbox
 
 protocol NetworkRouter: class {
     associatedtype EndPoint: EndPointType
     func get(resourceUrl: EndPoint, params: [String: Any]?, paramsHead: [String: String]?, completion: @escaping(Any?, NetworkError?) -> Void)
 }
 
-class Router<EndPoint: EndPointType>: NetworkRouter {
+class Manager<EndPoint: EndPointType>: NetworkRouter {
     
-    let networkCLient = NetworkClient()
+    private let networkCLient = NetworkClient()
     
     func get(resourceUrl: EndPoint, params: [String : Any]?, paramsHead: [String : String]?, completion: @escaping (Any?, NetworkError?) -> Void) {
         let resourceUrl = resourceUrl.baseURL.appendingPathComponent(resourceUrl.path)
         
-        networkCLient.requestFor(resourceUrl: resourceUrl, method: .get, parametersBody: nil, parametersHead: paramsHead) { (response) in
-            self.responseParser(response: response, completion: completion)
+        networkCLient.requestFor(resourceUrl: resourceUrl, method: .get, parametersBody: nil, parametersHead: paramsHead) { (response, status) in
+            switch status {
+            case .success:
+                self.responseParser(response: response, completion: completion)
+            case .failure:
+                completion(nil, NetworkError(response: response.response))
+            }
         }
     }
     
+    
     private func responseParser(response: DataResponse<Any>, completion: @escaping(Any?, NetworkError?) -> Void) {
         
-        guard let dataResponse = response.response, let result = response.result.value else {
-            return completion(nil, NetworkError.serverDown)
+        guard let result = response.result.value else {
+            return completion(nil, NetworkError.unsuccessError("Cannot return the result of responze serialization"))
         }
         
-        if dataResponse.statusCode.isSuccessHTTPCode {
-            return completion(result, nil)
-        }
         
-        let networkError = NetworkError(response: dataResponse)
-        return completion(nil, networkError)
+        return completion(result, nil)
     }
 }
 

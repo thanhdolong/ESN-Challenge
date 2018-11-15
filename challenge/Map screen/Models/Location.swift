@@ -8,8 +8,9 @@
 
 import Foundation
 import MapKit
+import Unbox
 
-class Location: NSObject {
+final class Location: NSObject, Unboxable {
     
     // MARK: - Instance Properties
     private let radius: Double = 150
@@ -39,6 +40,14 @@ class Location: NSObject {
         self.type = location.type
         self.latitude = location.latitude
         self.longitude = location.longitude
+    }
+    
+    init(unboxer: Unboxer) throws {
+        self.identifier = try unboxer.unbox(key: "id")
+        self.name = try unboxer.unbox(key: "title")
+        self.type = try unboxer.unbox(key: "type")
+        self.latitude = try unboxer.unbox(key: "lat")
+        self.longitude = try unboxer.unbox(key: "lng")
     }
 }
 

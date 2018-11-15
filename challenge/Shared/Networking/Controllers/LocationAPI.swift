@@ -8,16 +8,16 @@
 
 import Foundation
 import Alamofire
+import Unbox
 
 class LocationAPI {
-    let router = Router<LocationEndPoint>()
+    let router = Manager<LocationEndPoint>()
     
-    func geAllLocations( completion: @escaping (_ locations: Any?,_ error: NetworkError?)->() ){
+    func geAllLocations( completion: @escaping (ApiResult<Location>) -> Void )  {
         router.get(resourceUrl: .allLocation, params: nil, paramsHead: nil) { (data, error) in
-            
-            completion(data, error)
-            return
+              completion(ApiResult(data,error))
         }
+        
     }
     
 }

@@ -10,6 +10,7 @@ import Foundation
 import MapKit
 import CoreLocation
 import RealmSwift
+import Unbox
 
 protocol MapScreenDatasourceDelegate: class {
     func didReceiveLocations(locations: [Location])
@@ -17,12 +18,13 @@ protocol MapScreenDatasourceDelegate: class {
 }
 
 class MapScreenDatasource {
+    let database: Database
     let sandboxAPI: SandboxAPI = SandboxAPI()
     let locationAPI: LocationAPI = LocationAPI()
+    
     var locations = [LocationObject]()
     var monitoringLocations = [Location]()
     var hash: String = "hash"
-    let database: Database
     weak var mapScreenDatasourceDelegate: MapScreenDatasourceDelegate?
     
     init(database: Database) {
@@ -32,22 +34,26 @@ class MapScreenDatasource {
 
 extension MapScreenDatasource {
     func loadLocations(){
-        // TODO: load pins from server (json).
-//        sandboxAPI.getStatus(id: 403, completion: { (posts, error) in
-//            print("1> zde je status: \(error ?? NetworkError.unsuccessError("No error"))")
-//            print("1> zde jsou zpráva: \(posts ?? "empty")")
-//
-//        })
+        locationAPI.geAllLocations { (respond) in
+            do {
+                let result = try respond.unwrap()
+                print("wtf???? \(result)")
+            } catch let error {
+                print("chyba \(error)")
+            }
+        }
         
-        locationAPI.geAllLocations { (posts, error) in
-            guard let posts = posts else {
+        sandboxAPI.getStatus(id: 500) { (data, error) in
+            guard let data = data else {
                 if let error = error {
-                     print("Error: \(error)")
+                    print("> error \(error.errorMessages), \(error.statusCode)")
                 }
                 return
             }
-            print("\(posts)")
+            
+            print("> data \(data)")
         }
+        
         
         if hash != "hash" {
             print("Delete Realm Database")
@@ -58,12 +64,11 @@ extension MapScreenDatasource {
             let location2 = LocationObject(title: "London", type: "Lorem Ipsum", latitude: 51.50998, longitude: -0.118092)
             let location3 = LocationObject(title: "Apple HQ", type: "Lorem Ipsum", latitude: 37.3270145, longitude: -122.0301)
             let location4 = LocationObject(title: "Žabovřesky", type: "Lorem Ipsum", latitude: 49.213691, longitude: 16.574814)
-           
+            
             locations.append(location1)
             locations.append(location2)
             locations.append(location3)
             locations.append(location4)
-
             try! database.insertObjects(locations, update: true)
             print("> databaze[insert]: \(database.fetch(with: Location.all).debugDescription)")
         }
