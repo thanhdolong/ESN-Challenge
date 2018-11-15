@@ -12,28 +12,25 @@ import Unbox
 import Foundation
 
 class ApiResult<T: Unboxable> {
-    let data: Any?
-    let error: NetworkError?
+    private let result: Any?
+    private let error: NetworkError?
     
-    init(_ data: Any?,_ error: NetworkError?) {
-        self.data = data
+    init(_ result: Any?,_ error: NetworkError?) {
+        self.result = result
         self.error = error
     }
     
     func unwrap() throws -> [T] {
-        guard let data = data as? [[String: AnyObject]] else {
-            if let error = error {
-                throw error
-            }
-            throw NetworkError.badRequest
+        guard let result = result as? [[String: AnyObject]] else {
+            if let error = error { throw error }
+            
+            throw NetworkError.unsuccessError("[DataError] An error occured while trying unwrap responze")
         }
         
         do {
-            let model: [T] = try unbox(dictionaries: data)
-            dump(model)
-            return model
+            let unboxedJSON: [T] = try unbox(dictionaries: result)
+            return unboxedJSON
         } catch (let error){
-            print("An error occurred: \(error)")
             throw error
         }
     }

@@ -10,8 +10,8 @@ import Foundation
 import Alamofire
 
 class SandboxAPI {
-    let routerSandbox = Manager<SandboxEndPoint>()
-    let routerStatus = Manager<StatusEndPoint>()
+    private let routerSandbox = Manager<SandboxEndPoint>()
+    private let routerStatus = Manager<StatusEndPoint>()
     
     func getPosts( completion: @escaping (_ locations: Any?,_ error: NetworkError?)->() ){
         routerSandbox.get(resourceUrl: .posts, params: nil, paramsHead: nil) { (data, error) in

@@ -19,26 +19,33 @@ class Manager<EndPoint: EndPointType>: NetworkRouter {
     
     private let networkCLient = NetworkClient()
     
-    func get(resourceUrl: EndPoint, params: [String : Any]?, paramsHead: [String : String]?, completion: @escaping (Any?, NetworkError?) -> Void) {
+    func get(resourceUrl: EndPoint,
+             params: [String : Any]?,
+             paramsHead: [String : String]?,
+             completion: @escaping (Any?, NetworkError?) -> Void) {
+        
         let resourceUrl = resourceUrl.baseURL.appendingPathComponent(resourceUrl.path)
         
-        networkCLient.requestFor(resourceUrl: resourceUrl, method: .get, parametersBody: nil, parametersHead: paramsHead) { (response, status) in
+        networkCLient.requestFor(resourceUrl: resourceUrl,
+                                 method: .get,
+                                 parametersBody: nil,
+                                 parametersHead: paramsHead) { (response, status) in
+                                    
             switch status {
-            case .success:
-                self.responseParser(response: response, completion: completion)
-            case .failure:
-                completion(nil, NetworkError(response: response.response))
-            }
+                case .success:
+                    self.responseParser(response: response, completion: completion)
+                case .failure:
+                    completion(nil, NetworkError(response: response.response))
+                }
         }
     }
     
     
     private func responseParser(response: DataResponse<Any>, completion: @escaping(Any?, NetworkError?) -> Void) {
-        
         guard let result = response.result.value else {
-            return completion(nil, NetworkError.unsuccessError("Cannot return the result of responze serialization"))
+            completion(nil, NetworkError.unsuccessError("ResultError] Cannot return the result of responze serialization"))
+            return
         }
-        
         
         return completion(result, nil)
     }

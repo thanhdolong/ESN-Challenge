@@ -11,7 +11,7 @@ import Alamofire
 import Unbox
 
 class LocationAPI {
-    let router = Manager<LocationEndPoint>()
+    private let router = Manager<LocationEndPoint>()
     
     func geAllLocations( completion: @escaping (ApiResult<Location>) -> Void )  {
         router.get(resourceUrl: .allLocation, params: nil, paramsHead: nil) { (data, error) in
