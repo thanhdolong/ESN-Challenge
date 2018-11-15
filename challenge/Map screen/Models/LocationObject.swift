@@ -8,6 +8,7 @@
 
 import Foundation
 import MapKit
+import Unbox
 import RealmSwift
 
 class LocationObject: Object {
@@ -25,11 +26,22 @@ class LocationObject: Object {
 }
 
 extension LocationObject {
+    convenience init(unboxer: Unboxer) throws {
+        self.init()
+        
+        self.identifier = try unboxer.unbox(key: "id")
+        self.name = try unboxer.unbox(key: "title")
+        self.type = try unboxer.unbox(key: "type")
+        self.latitude = try unboxer.unbox(key: "lat")
+        self.longitude = try unboxer.unbox(key: "lng")
+    }
+    
     convenience init(title: String,
                      type: String,
                      latitude: Double,
                      longitude: Double) {
         self.init()
+        
         self.identifier = title
         self.name = title
         self.type = type
