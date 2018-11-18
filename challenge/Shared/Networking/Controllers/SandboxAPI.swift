@@ -13,8 +13,8 @@ class SandboxAPI {
     private let routerSandbox = Manager<SandboxEndPoint>()
     private let routerStatus = Manager<StatusEndPoint>()
     
-    func getPosts( completion: @escaping (_ locations: Any?,_ error: NetworkError?)->() ){
-        routerSandbox.get(resourceUrl: .posts, params: nil, paramsHead: nil) { (data, error) in
+    func getPosts( completion: @escaping (_ data: Any?, _ error: NetworkError?)->() ){
+        routerSandbox.get(resourceUrl: .posts, params: nil, paramsHead: nil) { (data, header, error) in
             // Todo: Change into model
             
             completion(data, error)
@@ -22,8 +22,8 @@ class SandboxAPI {
         }
     }
     
-    func getStatus(id: Int, completion: @escaping (_ locations: Any?,_ error: NetworkError?)->()) {
-        routerStatus.get(resourceUrl: .status(id: id), params: nil, paramsHead: nil) { (data, error) in
+    func getStatus(id: Int, completion: @escaping (_ data: Any?, _ error: NetworkError?)->()) {
+        routerStatus.get(resourceUrl: .status(id: id), params: nil, paramsHead: nil) { (data,header, error) in
             completion(data, error)
             return
         }

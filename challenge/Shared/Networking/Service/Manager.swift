@@ -12,7 +12,7 @@ import Unbox
 
 protocol NetworkRouter: class {
     associatedtype EndPoint: EndPointType
-    func get(resourceUrl: EndPoint, params: [String: Any]?, paramsHead: [String: String]?, completion: @escaping(Any?, NetworkError?) -> Void)
+    func get(resourceUrl: EndPoint, params: [String: Any]?, paramsHead: [String: String]?, completion: @escaping(Any?, HTTPURLResponse?, NetworkError?) -> Void)
 }
 
 class Manager<EndPoint: EndPointType>: NetworkRouter {
@@ -22,7 +22,7 @@ class Manager<EndPoint: EndPointType>: NetworkRouter {
     func get(resourceUrl: EndPoint,
              params: [String : Any]?,
              paramsHead: [String : String]?,
-             completion: @escaping (Any?, NetworkError?) -> Void) {
+             completion: @escaping (Any? , HTTPURLResponse?, NetworkError?) -> Void) {
         
         let resourceUrl = resourceUrl.baseURL.appendingPathComponent(resourceUrl.path)
         
@@ -35,19 +35,22 @@ class Manager<EndPoint: EndPointType>: NetworkRouter {
                 case .success:
                     self.responseParser(response: response, completion: completion)
                 case .failure:
-                    completion(nil, NetworkError(response: response.response))
+                    completion(nil, nil, NetworkError(response: response.response))
                 }
         }
     }
     
     
-    private func responseParser(response: DataResponse<Any>, completion: @escaping(Any?, NetworkError?) -> Void) {
-        guard let result = response.result.value else {
-            completion(nil, NetworkError.unsuccessError("ResultError] Cannot return the result of responze serialization"))
+    private func responseParser(
+        response: DataResponse<Any>,
+        completion: @escaping(Any?, HTTPURLResponse?, NetworkError?) -> Void) {
+        guard let body = response.result.value, let header = response.response else {
+            completion(nil, nil, NetworkError.unsuccessError("ResultError] Cannot return the result of responze serialization"))
             return
         }
         
-        return completion(result, nil)
+        
+        return completion(body, header, nil)
     }
 }
 
