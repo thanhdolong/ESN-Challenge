@@ -13,8 +13,9 @@ import RealmSwift
 import Unbox
 
 protocol MapScreenDatasourceDelegate: class {
+    func didReceiveCircularOverlay(overlays: [MKOverlay])
     func didReceiveLocations(locations: [Location])
-    func didReceiveMonitoringLocations(locations: [Location])
+    func didReceiveMonitoringLocations(nearbyRegions: [CLCircularRegion])
 }
 
 class MapScreenDatasource {
@@ -22,7 +23,6 @@ class MapScreenDatasource {
     let sandboxAPI: SandboxAPI = SandboxAPI()
     let locationAPI: LocationAPI = LocationAPI()
     
-    var monitoringLocations = [Location]()
     weak var mapScreenDatasourceDelegate: MapScreenDatasourceDelegate?
     
     init(database: Database) {
@@ -37,25 +37,41 @@ extension MapScreenDatasource {
                 print("status code \(try respond.getStatusCode())")
                 if (try respond.getStatusCode() == 200) {
                     print("Unwrap data")
-                    let locations = try respond.unwrap()
-                    self.save(locations)
+                    let locationObjects = try respond.unwrap()
+                    self.saveLocations(locationObjects)
                     print("set hash")
                     Defaults.databaseHash = try respond.getHeaderField(key: "hash") as? String
                 }
                 
                 print("Notify controler")
-                self.mapScreenDatasourceDelegate?.didReceiveLocations(locations: self.database.fetch(with: Location.all))
+                let locations = self.database.fetch(with: Location.all)
+                self.mapScreenDatasourceDelegate?.didReceiveLocations(locations: locations)
+                self.mapScreenDatasourceDelegate?.didReceiveCircularOverlay(overlays: locations.map({ (location) -> MKOverlay in
+                    location.circularOverlay
+                }))
             } catch let error {
                 print(error)
             }
         }
     }
     
-    func loadMonitoringLocations() {
-        mapScreenDatasourceDelegate?.didReceiveMonitoringLocations(locations: monitoringLocations)
+    func evaluateClosestRegions(from currentLocation: CLLocation) {
+        let allRegions = self.database.fetch(with: Location.all)
+        
+        //Calulate distance of each region's center to currentLocation
+        for region in allRegions {
+            region.distanceFromCurrentLocation = currentLocation.distance(from: CLLocation(latitude: region.latitude, longitude: region.longitude))
+        }
+        
+        let result = setRegions(for: nearbyRegions(from: allRegions))
+        
+        mapScreenDatasourceDelegate?.didReceiveMonitoringLocations(nearbyRegions: result)
     }
-    
-    private func save(_ locations: [LocationObject]) {
+}
+
+
+extension MapScreenDatasource {
+    private func saveLocations(_ locations: [LocationObject]) {
         do {
             print("Set valid into false")
             try self.database.update(type: LocationObject.self, where: nil, setValues: ["isValid" : false])
@@ -68,5 +84,28 @@ extension MapScreenDatasource {
         } catch (let error) {
             print(error)
         }
+    }
+    
+    private func nearbyRegions(from allRegions: [Location]) -> ArraySlice<Location> {
+        let nearbyRegions = allRegions.sorted { (firstRegion, secondRegion) -> Bool in
+            guard let firstDistance = firstRegion.distanceFromCurrentLocation, let secondDistance = secondRegion.distanceFromCurrentLocation else { return false }
+            
+            return firstDistance < secondDistance
+            }.prefix(2)
+        
+        return nearbyRegions
+    }
+    
+    private func setRegions(for regions: ArraySlice<Location>) -> [CLCircularRegion] {
+        var result = [CLCircularRegion]()
+        for region in regions {
+            let region = CLCircularRegion(center: region.coordinate, radius: 150, identifier: region.identifier)
+            region.notifyOnEntry = true
+            region.notifyOnExit = true
+            
+            result.append(region)
+        }
+        
+        return result
     }
 }

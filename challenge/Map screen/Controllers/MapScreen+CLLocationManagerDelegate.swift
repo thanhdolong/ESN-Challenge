@@ -32,8 +32,9 @@ extension MapScreenViewController: CLLocationManagerDelegate {
     
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let currentLocation = locations.last else {return}
+        mapScreenDatasource.evaluateClosestRegions(from: currentLocation)
         /*
-         guard let latestLocation = locations.last else {return}
          print(latestLocation.coordinate)
          */
     }

@@ -21,6 +21,7 @@ final class Location: NSObject, Unboxable {
     let longitude: Double
     var location: CLLocation { return CLLocation(latitude: latitude, longitude: longitude) }
     var circularOverlay: MKCircle { return MKCircle(center: location.coordinate, radius: radius) }
+    var distanceFromCurrentLocation: Double?
     
     init(title: String,
          type: String,
