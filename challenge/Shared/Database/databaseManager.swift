@@ -103,7 +103,6 @@ final class Database {
     
     
     //    Delete method
-    
     func delete<RealmObject: Object>(type: RealmObject.Type, with primaryKey: String) throws {
         do {
             let object = realm.object(ofType: type, forPrimaryKey: primaryKey)
@@ -111,6 +110,23 @@ final class Database {
                 try realm.write {
                     realm.delete(object)
                 }
+            }
+        } catch (let error) {
+            print(error)
+            throw DatabaseError.deleteDataError
+        }
+    }
+    
+    func delete<RealmObject: Object>(type: RealmObject.Type, where predicate: NSPredicate?) throws {
+        do {
+            try realm.write {
+                var results = realm.objects(type)
+                
+                if let predicate = predicate {
+                    results = results.filter(predicate)
+                }
+                
+                realm.delete(results)
             }
         } catch (let error) {
             print(error)
