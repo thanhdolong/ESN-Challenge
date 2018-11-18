@@ -38,7 +38,6 @@
 		7644FDEA219B962C00E89FAF /* StatusEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7644FDE9219B962C00E89FAF /* StatusEndPoint.swift */; };
 		7644FDEC219C64FB00E89FAF /* Unbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7644FDEB219C64FA00E89FAF /* Unbox.framework */; };
 		7644FDF0219CBADD00E89FAF /* ApiResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7644FDEF219CBADD00E89FAF /* ApiResult.swift */; };
-		7644FDF2219E097D00E89FAF /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7644FDF1219E097C00E89FAF /* Book.swift */; };
 		7644FDF421A06FBC00E89FAF /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7644FDF321A06FBC00E89FAF /* Defaults.swift */; };
 		7651FE732187695200BA0205 /* MapScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7651FE722187695200BA0205 /* MapScreen.storyboard */; };
 		7651FE752187704700BA0205 /* MapSreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7651FE742187704700BA0205 /* MapSreenViewController.swift */; };
@@ -95,7 +94,6 @@
 		7644FDE9219B962C00E89FAF /* StatusEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusEndPoint.swift; sourceTree = "<group>"; };
 		7644FDEB219C64FA00E89FAF /* Unbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Unbox.framework; path = Carthage/Build/iOS/Unbox.framework; sourceTree = "<group>"; };
 		7644FDEF219CBADD00E89FAF /* ApiResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiResult.swift; sourceTree = "<group>"; };
-		7644FDF1219E097C00E89FAF /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		7644FDF321A06FBC00E89FAF /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		7651FE722187695200BA0205 /* MapScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MapScreen.storyboard; sourceTree = "<group>"; };
 		7651FE742187704700BA0205 /* MapSreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSreenViewController.swift; sourceTree = "<group>"; };
@@ -290,7 +288,6 @@
 			children = (
 				766059882188838F0060E4A8 /* LocationObject.swift */,
 				761AC4262197A32A00B9FD00 /* Location.swift */,
-				7644FDF1219E097C00E89FAF /* Book.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -475,7 +472,6 @@
 				7644FDEA219B962C00E89FAF /* StatusEndPoint.swift in Sources */,
 				763BF1AC218BA6F6006A62A8 /* MapScreenDatasource.swift in Sources */,
 				7644FDCA2199DA9200E89FAF /* MapScreen+MKMapViewDelegate.swift in Sources */,
-				7644FDF2219E097D00E89FAF /* Book.swift in Sources */,
 				7644FDC82199D9D900E89FAF /* MapScreen+CLLocationManagerDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

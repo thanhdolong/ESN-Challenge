@@ -46,7 +46,7 @@ extension MapScreenViewController {
             setupLocationManager()
             checkLocationAuthorization()
             setupMapView()
-            loadMonitoringLocations()
+            loadMapScreenDatasource()
         } else {
             // TODO: Show aler letting the user know they have to turn this on
         }
@@ -55,7 +55,7 @@ extension MapScreenViewController {
     private func setupLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = 10
+        locationManager.distanceFilter = 600
         locationManager.startUpdatingLocation()
     }
     
@@ -72,26 +72,28 @@ extension MapScreenViewController {
         mapView.userTrackingMode = .follow
     }
     
-    private func loadMonitoringLocations() {
+    private func loadMapScreenDatasource() {
         mapScreenDatasource.mapScreenDatasourceDelegate = self
         mapScreenDatasource.loadLocations()
     }
 }
 
 extension MapScreenViewController: MapScreenDatasourceDelegate {
-    func didReceiveMonitoringLocations(locations: [Location]) {
+    func didReceiveMonitoringLocations(nearbyRegions: [CLCircularRegion]) {
+                
         // Remove all regions were tracking before
-        for region in locationManager.monitoredRegions {
+        print("---Notify about monitoring---")
+        locationManager.monitoredRegions.forEach { (region) in
+            print("stop monitoring \(region.identifier)")
             locationManager.stopMonitoring(for: region)
         }
         
-        for monitoringLocation in locations {
-            let  region = CLCircularRegion(center: monitoringLocation.coordinate, radius: 150, identifier: monitoringLocation.identifier)
-            region.notifyOnEntry = true
-            region.notifyOnExit = true
+        nearbyRegions.forEach { (region) in
+            print("start monitoring \(region.identifier)")
             locationManager.startMonitoring(for: region)
-            print("Monitoring: \(monitoringLocation.name)")
         }
+        
+        print("---- End Notify about monitoring ---")
     }
     
     func didReceiveLocations(locations: [Location]) {
@@ -101,11 +103,8 @@ extension MapScreenViewController: MapScreenDatasourceDelegate {
         }
         
         mapView.removeAnnotations(filteredAnnotations)
+            
         mapView.addAnnotations(locations)
-        mapView.addOverlays(locations.map({ (location) -> MKOverlay in
-            location.circularOverlay
-        }))
-        
         for annotation in mapView.annotations {
             print("Location: \(annotation.title! ?? "nil")")
         }
