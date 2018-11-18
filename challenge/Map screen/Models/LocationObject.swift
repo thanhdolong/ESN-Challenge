@@ -11,7 +11,7 @@ import MapKit
 import Unbox
 import RealmSwift
 
-class LocationObject: Object {
+class LocationObject: Object, Unboxable {
     
     @objc dynamic private var identifier: String = ""
     @objc dynamic var name: String = ""
@@ -23,10 +23,8 @@ class LocationObject: Object {
     override static func primaryKey() -> String? {
         return "identifier"
     }
-}
-
-extension LocationObject {
-    convenience init(unboxer: Unboxer) throws {
+    
+    required convenience init(unboxer: Unboxer) throws {
         self.init()
         
         self.identifier = try unboxer.unbox(key: "id")
@@ -35,6 +33,9 @@ extension LocationObject {
         self.latitude = try unboxer.unbox(key: "lat")
         self.longitude = try unboxer.unbox(key: "lng")
     }
+}
+
+extension LocationObject {
     
     convenience init(title: String,
                      type: String,
