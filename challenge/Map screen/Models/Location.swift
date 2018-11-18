@@ -22,7 +22,6 @@ final class Location: NSObject, Unboxable {
     var location: CLLocation { return CLLocation(latitude: latitude, longitude: longitude) }
     var circularOverlay: MKCircle { return MKCircle(center: location.coordinate, radius: radius) }
     
-    
     init(title: String,
          type: String,
          latitude: Double,
@@ -42,7 +41,7 @@ final class Location: NSObject, Unboxable {
         self.longitude = location.longitude
     }
     
-    init(unboxer: Unboxer) throws {
+    required init(unboxer: Unboxer) throws {
         self.identifier = try unboxer.unbox(key: "id")
         self.name = try unboxer.unbox(key: "title")
         self.type = try unboxer.unbox(key: "type")
