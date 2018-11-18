@@ -14,10 +14,15 @@ class LocationAPI {
     private let router = Manager<LocationEndPoint>()
     
     func geAllLocations( completion: @escaping (ApiResult<Location>) -> Void )  {
-        router.get(resourceUrl: .allLocation, params: nil, paramsHead: nil) { (data, error) in
-              completion(ApiResult(data,error))
+        router.get(resourceUrl: .allLocation, params: nil, paramsHead: ["hash": Defaults.databaseHash ?? ""]) { (data, header, error) in
+            completion(ApiResult(data, header, error))
         }
-        
+    }
+    
+    func geAllLocationsAsObjects( completion: @escaping (ApiResult<LocationObject>) -> Void )  {
+        router.get(resourceUrl: .allLocation, params: nil, paramsHead: ["hash": Defaults.databaseHash ?? ""]) { (data, header, error) in
+            completion(ApiResult(data, header, error))
+        }
     }
     
 }
