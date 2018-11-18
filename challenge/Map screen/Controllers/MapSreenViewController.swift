@@ -36,7 +36,7 @@ class MapScreenViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: true)
+        navigationController?.setNavigationBarHidden(false, animated: true)
     }
 }
 
@@ -95,11 +95,17 @@ extension MapScreenViewController: MapScreenDatasourceDelegate {
     }
     
     func didReceiveLocations(locations: [Location]) {
+        let filteredAnnotations = mapView.annotations.filter { (annotation) -> Bool in
+            if annotation is MKUserLocation { return false }
+            return true
+        }
+        
+        mapView.removeAnnotations(filteredAnnotations)
         mapView.addAnnotations(locations)
         mapView.addOverlays(locations.map({ (location) -> MKOverlay in
             location.circularOverlay
         }))
-
+        
         for annotation in mapView.annotations {
             print("Location: \(annotation.title! ?? "nil")")
         }

@@ -22,9 +22,7 @@ class MapScreenDatasource {
     let sandboxAPI: SandboxAPI = SandboxAPI()
     let locationAPI: LocationAPI = LocationAPI()
     
-    var locations = [LocationObject]()
     var monitoringLocations = [Location]()
-    var hash: String = "hash"
     weak var mapScreenDatasourceDelegate: MapScreenDatasourceDelegate?
     
     init(database: Database) {
@@ -34,49 +32,41 @@ class MapScreenDatasource {
 
 extension MapScreenDatasource {
     func loadLocations(){
-        locationAPI.geAllLocations { (respond) in
+        locationAPI.geAllLocationsAsObjects { (respond) in
             do {
-                let result = try respond.unwrap()
-                print("wtf???? \(result)")
-            } catch let error {
-                print("chyba \(error)")
-            }
-        }
-        
-        sandboxAPI.getStatus(id: 500) { (data, error) in
-            guard let data = data else {
-                if let error = error {
-                    print("> error \(error.errorMessages), \(error.statusCode)")
+                print("status code \(try respond.getStatusCode())")
+                if (try respond.getStatusCode() == 200) {
+                    print("Unwrap data")
+                    let locations = try respond.unwrap()
+                    self.save(locations)
+                    print("set hash")
+                    Defaults.databaseHash = try respond.getHeaderField(key: "hash") as? String
                 }
-                return
+                
+                print("Notify controler")
+                self.mapScreenDatasourceDelegate?.didReceiveLocations(locations: self.database.fetch(with: Location.all))
+            } catch let error {
+                print(error)
             }
-            
-            print("> data \(data)")
         }
-        
-        
-        if hash != "hash" {
-            print("Delete Realm Database")
-            try! database.deleteAllFromDatabase()
-            
-            print("Setting Realm Database and save data")
-            let location1 = LocationObject(title: "Google HQ", type: "Lorem Ipsum", latitude: 37.422, longitude: -122.084058)
-            let location2 = LocationObject(title: "London", type: "Lorem Ipsum", latitude: 51.50998, longitude: -0.118092)
-            let location3 = LocationObject(title: "Apple HQ", type: "Lorem Ipsum", latitude: 37.3270145, longitude: -122.0301)
-            let location4 = LocationObject(title: "Žabovřesky", type: "Lorem Ipsum", latitude: 49.213691, longitude: 16.574814)
-            
-            locations.append(location1)
-            locations.append(location2)
-            locations.append(location3)
-            locations.append(location4)
-            try! database.insertObjects(locations, update: true)
-            print("> databaze[insert]: \(database.fetch(with: Location.all).debugDescription)")
-        }
-        
-        mapScreenDatasourceDelegate?.didReceiveLocations(locations: database.fetch(with: Location.all))
     }
     
     func loadMonitoringLocations() {
         mapScreenDatasourceDelegate?.didReceiveMonitoringLocations(locations: monitoringLocations)
+    }
+    
+    private func save(_ locations: [LocationObject]) {
+        do {
+            print("Set valid into false")
+            try self.database.update(type: LocationObject.self, where: nil, setValues: ["isValid" : false])
+            
+            print("Insert objects to Realm")
+            try self.database.insertObjects(locations, update: true)
+            
+            print("Delete invalid Locations")
+            try self.database.delete(type: LocationObject.self, where: NSPredicate(format: "isValid = %i", false))
+        } catch (let error) {
+            print(error)
+        }
     }
 }
