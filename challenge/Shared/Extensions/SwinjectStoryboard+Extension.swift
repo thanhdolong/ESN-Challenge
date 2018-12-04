@@ -19,17 +19,17 @@ extension SwinjectStoryboard {
         Container.loggingFunction = nil
         defaultContainer.register(Database.self) { _ in Database() }
         
-        defaultContainer.register(MapScreenDatasource.self) { (resolver) -> MapScreenDatasource in
+        defaultContainer.register(MapDatasource.self) { (resolver) -> MapDatasource in
             let database = resolver.resolve(Database.self)!
-            return MapScreenDatasource(database: database)
+            return MapDatasource(database: database)
         }
         
         defaultContainer.autoregister(CLLocationManager.self, initializer: CLLocationManager.init)
-        defaultContainer.autoregister(MapScreenDatasource.self, argument: Database.self, initializer: MapScreenDatasource.init(database:))
+        defaultContainer.autoregister(MapDatasource.self, argument: Database.self, initializer: MapDatasource.init(database:))
 
         
-        defaultContainer.storyboardInitCompleted(MapScreenViewController.self) { resolver, controller in
-            controller.mapScreenDatasource = resolver ~> MapScreenDatasource.self
+        defaultContainer.storyboardInitCompleted(MapViewController.self) { resolver, controller in
+            controller.mapScreenDatasource = resolver ~> MapDatasource.self
             controller.locationManager = resolver ~> CLLocationManager.self
         }
         
