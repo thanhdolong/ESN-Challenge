@@ -1,22 +1,23 @@
 //
-//  locationEndPoint.swift
+//  AuthEndPoint.swift
 //  challenge
 //
-//  Created by Thành Đỗ Long on 13/11/2018.
+//  Created by Thành Đỗ Long on 03/12/2018.
 //  Copyright © 2018 Thành Đỗ Long. All rights reserved.
 //
 
 import Foundation
 
-public enum LocationEndPoint {
-    case allLocation
-    case location(id:Int)
+import Foundation
+
+public enum AuthEndPoint {
+    case login
 }
 
-extension LocationEndPoint: EndPointType {
+extension AuthEndPoint: EndPointType {
     fileprivate var environmentBaseURL : String {
         switch NetworkClient.environment {
-        case .production: return "https://jsonplaceholder.typicode.com/"
+        case .production: return "https://httpstat.us/"
         case .develop: return "http://192.168.77.47:8888/api/"
         }
     }
@@ -29,10 +30,8 @@ extension LocationEndPoint: EndPointType {
     
     var path: String {
         switch self {
-        case .location(let id):
-            return "location/\(id)"
-        case .allLocation:
-            return "location"
+        case .login:
+            return "auth"
         }
     }
 }
