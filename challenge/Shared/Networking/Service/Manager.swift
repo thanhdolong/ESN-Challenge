@@ -10,12 +10,13 @@ import Foundation
 import Alamofire
 import Unbox
 
-protocol NetworkRouter: class {
-    associatedtype EndPoint: EndPointType
-    func get(resourceUrl: EndPoint, params: [String: Any]?, paramsHead: [String: String]?, completion: @escaping(Any?, HTTPURLResponse?, NetworkError?) -> Void)
-}
+//protocol NetworkRouter: class {
+//    associatedtype EndPoint: EndPointType
+//    func get(resourceUrl: EndPoint, params: [String: Any]?, paramsHead: [String: String]?, completion: @escaping(Any?, HTTPURLResponse?, NetworkError?) -> Void)
+//    func post(resourceUrl: EndPoint, params: [String: Any]?, paramsHead: [String: String]?, completion: @escaping(Any?, HTTPURLResponse?, NetworkError?) -> Void)
+//}
 
-class Manager<EndPoint: EndPointType>: NetworkRouter {
+class Manager<EndPoint: EndPointType> {
     
     private let networkCLient = NetworkClient()
     
@@ -37,6 +38,31 @@ class Manager<EndPoint: EndPointType>: NetworkRouter {
                 case .failure:
                     completion(nil, nil, NetworkError(response: response.response))
                 }
+        }
+    }
+    
+    func post(resourceUrl: EndPoint,
+             params: [String : Any]?,
+             paramsHead: [String : String]?,
+             completion: @escaping (Any? , HTTPURLResponse?, NetworkError?) -> Void) {
+        
+        let resourceUrl = resourceUrl.baseURL.appendingPathComponent(resourceUrl.path)
+
+        networkCLient.requestFor(resourceUrl: resourceUrl,
+                                 method: .post,
+                                 parametersBody: params,
+                                 parametersHead: paramsHead) { (response, status) in
+                                    
+                                    switch status {
+                                    case .success:
+                                        self.responseParser(response: response, completion: completion)
+                                    case .failure:
+                                        guard let data = response.data else {
+                                            return completion(nil, response.response, NetworkError(response: response.response))
+                                        }
+                                        
+                                        completion(data, response.response, NetworkError(response: response.response))
+                                    }
         }
     }
     
