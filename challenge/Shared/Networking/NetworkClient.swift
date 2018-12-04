@@ -41,6 +41,8 @@ public final class NetworkClient {
         sessionManager.request(resourceUrl, method: method, parameters: parametersBody, encoding: encoding, headers: headers).validate().responseJSON { (response) in
             completion(response, response.result)
         }
+        
+        
     }
 
 }

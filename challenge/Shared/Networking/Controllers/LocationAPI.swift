@@ -11,16 +11,34 @@ import Alamofire
 import Unbox
 
 class LocationAPI {
-    private let router = Manager<LocationEndPoint>()
+    private let locationRouter = Manager<LocationEndPoint>()
+    private let authRouter = Manager<AuthEndPoint>()
     
     func geAllLocations( completion: @escaping (ApiResult<Location>) -> Void )  {
-        router.get(resourceUrl: .allLocation, params: nil, paramsHead: ["hash": Defaults.databaseHash ?? ""]) { (data, header, error) in
+        let paramsHead = ["hash": Default.databaseHash ?? ""]
+        
+        locationRouter.get(resourceUrl: .allLocation, params: nil, paramsHead: paramsHead) { (data, header, error) in
             completion(ApiResult(data, header, error))
         }
     }
     
+    func login(email: String, password: String, completion: @escaping (Any?, NetworkError?) -> Void ) {
+        let params = [
+            "email": email,
+            "password": password
+        ]
+        
+        authRouter.post(resourceUrl: .login, params: params, paramsHead: nil) { (data, header, error) in
+            guard let data = data, header?.statusCode.isSuccessHTTPCode == true else {
+                return completion(nil, error)
+            }
+            
+            completion(data, nil)
+        }
+    }
+    
     func geAllLocationsAsObjects( completion: @escaping (ApiResult<LocationObject>) -> Void )  {
-        router.get(resourceUrl: .allLocation, params: nil, paramsHead: ["hash": Defaults.databaseHash ?? ""]) { (data, header, error) in
+        locationRouter.get(resourceUrl: .allLocation, params: nil, paramsHead: ["hash": Default.databaseHash ?? ""]) { (data, header, error) in
             completion(ApiResult(data, header, error))
         }
     }
