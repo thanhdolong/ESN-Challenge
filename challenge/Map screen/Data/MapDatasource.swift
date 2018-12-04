@@ -12,26 +12,28 @@ import CoreLocation
 import RealmSwift
 import Unbox
 
-protocol MapScreenDatasourceDelegate: class {
+protocol MapDatasourceDelegate: class {
     func didReceiveCircularOverlay(overlays: [MKOverlay])
     func didReceiveLocations(locations: [Location])
     func didReceiveMonitoringLocations(nearbyRegions: [CLCircularRegion])
 }
 
-class MapScreenDatasource {
+class MapDatasource {
     let database: Database
     let sandboxAPI: SandboxAPI = SandboxAPI()
     let locationAPI: LocationAPI = LocationAPI()
     
-    weak var mapScreenDatasourceDelegate: MapScreenDatasourceDelegate?
+    weak var mapScreenDatasourceDelegate: MapDatasourceDelegate?
     
     init(database: Database) {
         self.database = database
     }
 }
 
-extension MapScreenDatasource {
+extension MapDatasource {
     func loadLocations(){
+        self.notifyControler()
+        
         locationAPI.geAllLocationsAsObjects { (respond) in
             do {
                 print("status code \(try respond.getStatusCode())")
@@ -40,22 +42,19 @@ extension MapScreenDatasource {
                     let locationObjects = try respond.unwrap()
                     self.saveLocations(locationObjects)
                     print("set hash")
-                    Defaults.databaseHash = try respond.getHeaderField(key: "hash") as? String
+                    Default.databaseHash = try respond.getHeaderField(key: "hash") as? String
+                    self.notifyControler()
                 }
-                
-                print("Notify controler")
-                let locations = self.database.fetch(with: Location.all)
-                self.mapScreenDatasourceDelegate?.didReceiveLocations(locations: locations)
-                self.mapScreenDatasourceDelegate?.didReceiveCircularOverlay(overlays: locations.map({ (location) -> MKOverlay in
-                    location.circularOverlay
-                }))
-            } catch let error {
-                print(error)
+            } catch let error as NetworkError {
+                print("Network error: \(error.errorMessages)")
+            }
+            catch {
+                print("Unexpected error: \(error).")
             }
         }
     }
     
-    func evaluateClosestRegions(from currentLocation: CLLocation) {
+    func notifyAboutClosestMonitoringRegions(from currentLocation: CLLocation) {
         let allRegions = self.database.fetch(with: Location.all)
         
         //Calulate distance of each region's center to currentLocation
@@ -63,14 +62,14 @@ extension MapScreenDatasource {
             region.distanceFromCurrentLocation = currentLocation.distance(from: CLLocation(latitude: region.latitude, longitude: region.longitude))
         }
         
-        let result = setRegions(for: nearbyRegions(from: allRegions))
+        let result = setRegions(for: nearbyRegions(from: allRegions, limit: 3))
         
         mapScreenDatasourceDelegate?.didReceiveMonitoringLocations(nearbyRegions: result)
     }
 }
 
 
-extension MapScreenDatasource {
+extension MapDatasource {
     private func saveLocations(_ locations: [LocationObject]) {
         do {
             print("Set valid into false")
@@ -86,12 +85,12 @@ extension MapScreenDatasource {
         }
     }
     
-    private func nearbyRegions(from allRegions: [Location]) -> ArraySlice<Location> {
+    private func nearbyRegions(from allRegions: [Location], limit: Int) -> ArraySlice<Location> {
         let nearbyRegions = allRegions.sorted { (firstRegion, secondRegion) -> Bool in
             guard let firstDistance = firstRegion.distanceFromCurrentLocation, let secondDistance = secondRegion.distanceFromCurrentLocation else { return false }
             
             return firstDistance < secondDistance
-            }.prefix(2)
+            }.prefix(limit)
         
         return nearbyRegions
     }
@@ -99,13 +98,21 @@ extension MapScreenDatasource {
     private func setRegions(for regions: ArraySlice<Location>) -> [CLCircularRegion] {
         var result = [CLCircularRegion]()
         for region in regions {
-            let region = CLCircularRegion(center: region.coordinate, radius: 150, identifier: region.identifier)
+            let region = CLCircularRegion(center: region.coordinate, radius: region.radius, identifier: region.identifier)
             region.notifyOnEntry = true
             region.notifyOnExit = true
-            
             result.append(region)
         }
         
         return result
+    }
+    
+    private func notifyControler() {
+        print("Notify controler")
+        let locations = self.database.fetch(with: Location.all)
+        self.mapScreenDatasourceDelegate?.didReceiveLocations(locations: locations)
+        self.mapScreenDatasourceDelegate?.didReceiveCircularOverlay(overlays: locations.map({ (location) -> MKOverlay in
+            location.circularOverlay
+        }))
     }
 }

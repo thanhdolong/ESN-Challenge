@@ -11,26 +11,31 @@ import MapKit
 import CoreLocation
 import Alamofire
 
-class MapScreenViewController: UIViewController {
-    let regionInMeters: Double = 10000
+class MapViewController: UIViewController {
     var locationManager: CLLocationManager!
-    var mapScreenDatasource: MapScreenDatasource!
-
-    @IBOutlet weak var mapView: MKMapView!
+    var mapScreenDatasource: MapDatasource!
+    var mapScreenView: MapView! {
+        guard isViewLoaded else { return nil }
+        return (view as! MapView)
+    }
     
-    static func initFromStoryboard() -> MapScreenViewController {
-        let storyboard = UIStoryboard(name: "MapScreen", bundle: nil)
-        let viewController = storyboard.instantiateInitialViewController()! as! MapScreenViewController
+    @IBAction func openSettings(_ sender: UIButton) {
+        let vc = NavigationController(rootViewController: SettingsTableViewController())
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    @IBAction func zoomToCurrentLocation(sender: AnyObject) {
+        mapScreenView.map.zoomToUserLocation()
+    }
+    
+    static func storyboardInit() -> MapViewController {
+        let storyboard = UIStoryboard(name: "Map", bundle: nil)
+        let viewController = storyboard.instantiateInitialViewController()! as! MapViewController
         return viewController
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view, typically from a nib.
-        // let location = Location(title: "Prague", latitude: 50.08804, longtitude: 50.08804)
-        // let prague = CLLocation(latitude: location.latitude, longitude: location.longtitude)
-        
         checkLocationServices()
     }
     
@@ -40,36 +45,32 @@ class MapScreenViewController: UIViewController {
     }
 }
 
-extension MapScreenViewController {
-    private func checkLocationServices() {
+extension MapViewController {
+    func checkLocationServices() {
         if CLLocationManager.locationServicesEnabled() {
-            setupLocationManager()
             checkLocationAuthorization()
-            setupMapView()
+            startReceivingLocationChanges()
             loadMapScreenDatasource()
         } else {
-            // TODO: Show aler letting the user know they have to turn this on
+            showAlert(withTitle: nil, message: "Location services is not available on this device.")
         }
     }
     
-    private func setupLocationManager() {
-        locationManager.delegate = self
+    private func startReceivingLocationChanges() {        
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = 600
+        locationManager.distanceFilter = 100.0
+        locationManager.delegate = self
         locationManager.startUpdatingLocation()
     }
     
     private func checkLocationAuthorization() {
-        if CLLocationManager.authorizationStatus() == .notDetermined {
+        let authorizationStatus = CLLocationManager.authorizationStatus()
+        if authorizationStatus != .authorizedWhenInUse && authorizationStatus != .authorizedAlways {
+            // User has not authorized access to location information.
             print("Not determined status. Show request for using location.")
             locationManager.requestAlwaysAuthorization()
+            return
         }
-    }
-    
-    private func setupMapView() {
-        mapView.showsUserLocation = true
-        mapView.mapType = .standard
-        mapView.userTrackingMode = .follow
     }
     
     private func loadMapScreenDatasource() {
@@ -78,9 +79,12 @@ extension MapScreenViewController {
     }
 }
 
-extension MapScreenViewController: MapScreenDatasourceDelegate {
+extension MapViewController: MapDatasourceDelegate {
     func didReceiveMonitoringLocations(nearbyRegions: [CLCircularRegion]) {
-                
+        guard let firstRegion = nearbyRegions.first else {
+            return
+        }
+        
         // Remove all regions were tracking before
         print("---Notify about monitoring---")
         locationManager.monitoredRegions.forEach { (region) in
@@ -92,25 +96,26 @@ extension MapScreenViewController: MapScreenDatasourceDelegate {
             print("start monitoring \(region.identifier)")
             locationManager.startMonitoring(for: region)
         }
-        
+        locationManager.startMonitoringVisits()
+        locationManager.requestState(for: firstRegion)
         print("---- End Notify about monitoring ---")
     }
     
     func didReceiveLocations(locations: [Location]) {
-        let filteredAnnotations = mapView.annotations.filter { (annotation) -> Bool in
+        let filteredAnnotations = mapScreenView.map.annotations.filter { (annotation) -> Bool in
             if annotation is MKUserLocation { return false }
             return true
         }
         
-        mapView.removeAnnotations(filteredAnnotations)
+        mapScreenView.map.removeAnnotations(filteredAnnotations)
             
-        mapView.addAnnotations(locations)
-        for annotation in mapView.annotations {
+        mapScreenView.map.addAnnotations(locations)
+        for annotation in mapScreenView.map.annotations {
             print("Location: \(annotation.title! ?? "nil")")
         }
     }
     
     func didReceiveCircularOverlay(overlays: [MKOverlay]) {
-        mapView.addOverlays(overlays)
+        mapScreenView.map.addOverlays(overlays)
     }
 }

@@ -13,7 +13,7 @@ import Unbox
 final class Location: NSObject, Unboxable {
     
     // MARK: - Instance Properties
-    private let radius: Double = 150
+    var radius: Double { return 150 }
     let identifier: String
     let name: String
     let type: String
