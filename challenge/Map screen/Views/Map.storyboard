@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="whu-8P-pdE">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-SemiBold.otf">
+            <string>Montserrat-SemiBold</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Map View Controller-->
+        <scene sceneID="gUi-2o-SK2">
+            <objects>
+                <viewController id="whu-8P-pdE" customClass="MapViewController" customModule="challenge" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nh4-rC-D09" customClass="MapView" customModule="challenge" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" restorationIdentifier="MapScreen" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iaZ-8Y-ZKR">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="778"/>
+                                <connections>
+                                    <outlet property="delegate" destination="whu-8P-pdE" id="yLZ-1b-BaA"/>
+                                </connections>
+                            </mapView>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XEm-SM-Im6">
+                                <rect key="frame" x="100" y="701" width="175" height="42"/>
+                                <color key="backgroundColor" red="0.98823529409999999" green="0.4549019608" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="3ju-x2-VLF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="17"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="CHECK"/>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Fd-FW-kMV">
+                                <rect key="frame" x="309" y="68" width="50" height="84"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="DhS-kI-O4a">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="84"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oD8-Jb-ck4" userLabel="Info">
+                                                <rect key="frame" x="0.0" y="0.0" width="50" height="41.666666666666664"/>
+                                                <color key="tintColor" red="0.98823529409999999" green="0.4549019608" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                                <connections>
+                                                    <action selector="openSettings:" destination="whu-8P-pdE" eventType="touchUpInside" id="zL0-Z7-emu"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bih-zm-d6f" userLabel="Zoom">
+                                                <rect key="frame" x="0.0" y="42.666666666666671" width="50" height="41.333333333333329"/>
+                                                <color key="tintColor" red="0.98823529409999999" green="0.4549019608" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                                <state key="normal" image="location"/>
+                                                <state key="selected" image="locationHighlighted"/>
+                                                <state key="highlighted" image="location"/>
+                                                <connections>
+                                                    <action selector="zoomToCurrentLocationWithSender:" destination="whu-8P-pdE" eventType="touchUpInside" id="yH0-7J-3dQ"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="DhS-kI-O4a" secondAttribute="trailing" id="BUQ-0l-a7o"/>
+                                    <constraint firstItem="DhS-kI-O4a" firstAttribute="top" secondItem="4Fd-FW-kMV" secondAttribute="top" id="EyE-N7-p6U"/>
+                                    <constraint firstAttribute="width" constant="50" id="GI4-D8-lNG"/>
+                                    <constraint firstAttribute="height" constant="84" id="HvD-dl-VLI"/>
+                                    <constraint firstAttribute="bottom" secondItem="DhS-kI-O4a" secondAttribute="bottom" id="Xrz-2A-pz8"/>
+                                    <constraint firstItem="DhS-kI-O4a" firstAttribute="leading" secondItem="4Fd-FW-kMV" secondAttribute="leading" id="nJ4-Ag-DEi"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="opi-nf-jGt" firstAttribute="bottom" secondItem="iaZ-8Y-ZKR" secondAttribute="bottom" id="5dL-gs-YjY"/>
+                            <constraint firstItem="opi-nf-jGt" firstAttribute="bottom" secondItem="XEm-SM-Im6" secondAttribute="bottom" constant="35" id="8UI-XO-A1z"/>
+                            <constraint firstItem="iaZ-8Y-ZKR" firstAttribute="leading" secondItem="opi-nf-jGt" secondAttribute="leading" id="8Yr-gj-jA5"/>
+                            <constraint firstItem="opi-nf-jGt" firstAttribute="trailing" secondItem="XEm-SM-Im6" secondAttribute="trailing" constant="100" id="Qlt-Hk-3i2"/>
+                            <constraint firstItem="4Fd-FW-kMV" firstAttribute="top" secondItem="opi-nf-jGt" secondAttribute="top" constant="24" id="eVQ-8J-UyU"/>
+                            <constraint firstItem="iaZ-8Y-ZKR" firstAttribute="top" secondItem="nh4-rC-D09" secondAttribute="top" id="goL-TB-E7I"/>
+                            <constraint firstItem="opi-nf-jGt" firstAttribute="trailing" secondItem="4Fd-FW-kMV" secondAttribute="trailing" constant="16" id="iuz-u5-IdY"/>
+                            <constraint firstItem="XEm-SM-Im6" firstAttribute="leading" secondItem="opi-nf-jGt" secondAttribute="leading" constant="100" id="oMm-Bz-zva"/>
+                            <constraint firstItem="opi-nf-jGt" firstAttribute="trailing" secondItem="iaZ-8Y-ZKR" secondAttribute="trailing" id="sLT-Z4-DH9"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="opi-nf-jGt"/>
+                        <connections>
+                            <outlet property="checkButton" destination="XEm-SM-Im6" id="GFS-Cj-qjP"/>
+                            <outlet property="controlsContainer" destination="4Fd-FW-kMV" id="D5J-GF-NKq"/>
+                            <outlet property="infoButton" destination="oD8-Jb-ck4" id="N4u-6h-33o"/>
+                            <outlet property="map" destination="iaZ-8Y-ZKR" id="vvB-sk-yX8"/>
+                            <outlet property="zoomUserLocationButton" destination="bih-zm-d6f" id="rn3-2r-K5q"/>
+                        </connections>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="K6Y-wU-npr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="85.599999999999994" y="-323.64532019704433"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="location" width="19" height="19"/>
+        <image name="locationHighlighted" width="19" height="19"/>
+    </resources>
+</document>
