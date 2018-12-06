@@ -11,6 +11,10 @@ import CoreLocation
 import SwinjectStoryboard
 
 class HighScoresViewController: UIViewController {
+    var highScoresView: HighScoresView! {
+        guard isViewLoaded else { return nil }
+        return (view as! HighScoresView)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,5 +39,9 @@ class HighScoresViewController: UIViewController {
         navigationController?.pushViewController(viewController, animated: true)
     }
     
+    @IBAction func logout(_ sender: UIButton) {
+        let user = User()
+        user.deleteAccessToken()
+    }
 }
 
