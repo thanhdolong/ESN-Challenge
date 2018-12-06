@@ -16,9 +16,7 @@ class SafariController: NSObject {
         let safariVC = SFSafariViewController(url: url)
         safariVC.delegate = self
 //        safariVC.preferredControlTintColor = Appearance.shared().mainColor^
-        
-        if let topController = UIApplication.shared.keyWindow?.rootViewController {
-//            UIApplication.shared.statusBarView?.backgroundColor = NavigationController.defaultStatusBarColor
+        if let topController = UIApplication.topViewController() {
             topController.present(safariVC, animated: true, completion: nil)
         }
     }
