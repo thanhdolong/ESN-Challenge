@@ -21,7 +21,7 @@ class TabBarViewController: UITabBarController {
         // 1.
         let firstVC = HighScoresViewController.storyboardInit()
         let secondVC = MapViewController.storyboardInit()
-        let thirdVC = LoginViewController.storyboardInit()
+        let thirdVC = ProfileViewController(user: User())
         
         
         let firstTaBBarItem = UITabBarItem(title: "HIGH SCORES",
