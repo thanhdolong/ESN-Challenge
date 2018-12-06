@@ -38,3 +38,21 @@ extension UIColor {
         self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
     }
 }
+
+// MARK: Get top most UIViewController
+extension UIApplication {
+    class func topViewController(viewController: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+        if let nav = viewController as? UINavigationController {
+            return topViewController(viewController: nav.visibleViewController)
+        }
+        if let tab = viewController as? UITabBarController {
+            if let selected = tab.selectedViewController {
+                return topViewController(viewController: selected)
+            }
+        }
+        if let presented = viewController?.presentedViewController {
+            return topViewController(viewController: presented)
+        }
+        return viewController
+    }
+}
