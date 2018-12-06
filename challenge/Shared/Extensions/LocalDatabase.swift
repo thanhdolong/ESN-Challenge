@@ -1,5 +1,5 @@
 //
-//  Defaults.swift
+//  DefaultsDatabase.swift
 //  challenge
 //
 //  Created by Thành Đỗ Long on 17/11/2018.
@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-struct Default {
+struct LocalDatabase {
     static let userSessionKey = "com.save.challenge"
     
     static var databaseHash: String? {
@@ -19,16 +19,6 @@ struct Default {
         
         set {
             UserDefaults.standard.set(newValue, forKey: "hash")
-        }
-    }
-    
-    static var accessToken: String? {
-        get {
-            return UserDefaults.standard.string(forKey: "accessToken")
-        }
-        
-        set {
-            UserDefaults.standard.set(newValue, forKey: "accessToken")
         }
     }
     
@@ -93,7 +83,7 @@ public protocol FontScheme{
 
 private struct Fonts: FontScheme {
     public let titleMedium = UIFont(name: "Montserrat-SemiBold", size: 17)!
-    public let navigationTitle = UIFont(name: "Montserrat-SemiBold", size: 34)!
+    public let navigationTitle = UIFont(name: "Montserrat-SemiBold", size: 29)!
     public let bodyRegular = UIFont(name: "Montserrat-Regular", size: 15)!
     public let tapBarTitle = UIFont(name: "Montserrat-SemiBold", size: 10)!
 }
