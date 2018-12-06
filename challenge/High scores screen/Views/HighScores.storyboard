@@ -13,10 +13,23 @@
         <scene sceneID="3hI-Yv-KWA">
             <objects>
                 <viewController id="IlJ-b8-Wkj" customClass="HighScoresViewController" customModule="challenge" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Hpz-ua-6tj">
+                    <view key="view" contentMode="scaleToFill" id="Hpz-ua-6tj" customClass="HighScoresView" customModule="challenge" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kLe-ei-CVY">
+                                <rect key="frame" x="163.5" y="318.5" width="48" height="30"/>
+                                <state key="normal" title="Logout"/>
+                                <connections>
+                                    <action selector="logout:" destination="IlJ-b8-Wkj" eventType="touchUpInside" id="drs-tQ-hEJ"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="kLe-ei-CVY" firstAttribute="centerX" secondItem="Hpz-ua-6tj" secondAttribute="centerX" id="UAa-n7-urK"/>
+                            <constraint firstItem="kLe-ei-CVY" firstAttribute="centerY" secondItem="Hpz-ua-6tj" secondAttribute="centerY" id="fmL-N2-add"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Jzh-TD-fqy"/>
                     </view>
                 </viewController>
