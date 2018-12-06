@@ -15,7 +15,7 @@ class LocationAPI {
     private let authRouter = Manager<AuthEndPoint>()
     
     func geAllLocations( completion: @escaping (ApiResult<Location>) -> Void )  {
-        let paramsHead = ["hash": Default.databaseHash ?? ""]
+        let paramsHead = ["hash": LocalDatabase.databaseHash ?? ""]
         
         locationRouter.get(resourceUrl: .allLocation, params: nil, paramsHead: paramsHead) { (data, header, error) in
             completion(ApiResult(data, header, error))
@@ -38,7 +38,7 @@ class LocationAPI {
     }
     
     func geAllLocationsAsObjects( completion: @escaping (ApiResult<LocationObject>) -> Void )  {
-        locationRouter.get(resourceUrl: .allLocation, params: nil, paramsHead: ["hash": Default.databaseHash ?? ""]) { (data, header, error) in
+        locationRouter.get(resourceUrl: .allLocation, params: nil, paramsHead: ["hash": LocalDatabase.databaseHash ?? ""]) { (data, header, error) in
             completion(ApiResult(data, header, error))
         }
     }
