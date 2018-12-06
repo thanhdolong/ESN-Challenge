@@ -12,25 +12,25 @@ import CoreLocation
 import RealmSwift
 import Unbox
 
-protocol MapDatasourceDelegate: class {
+protocol LocationsDatasourceDelegate: class {
     func didReceiveCircularOverlay(overlays: [MKOverlay])
     func didReceiveLocations(locations: [Location])
     func didReceiveMonitoringLocations(nearbyRegions: [CLCircularRegion])
 }
 
-class MapDatasource {
+class LocationsDatasource {
     let database: Database
     let sandboxAPI: SandboxAPI = SandboxAPI()
     let locationAPI: LocationAPI = LocationAPI()
     
-    weak var mapScreenDatasourceDelegate: MapDatasourceDelegate?
+    weak var mapScreenDatasourceDelegate: LocationsDatasourceDelegate?
     
     init(database: Database) {
         self.database = database
     }
 }
 
-extension MapDatasource {
+extension LocationsDatasource {
     func loadLocations(){
         self.notifyControler()
         
@@ -42,7 +42,7 @@ extension MapDatasource {
                     let locationObjects = try respond.unwrap()
                     self.saveLocations(locationObjects)
                     print("set hash")
-                    Default.databaseHash = try respond.getHeaderField(key: "hash") as? String
+                    LocalDatabase.databaseHash = try respond.getHeaderField(key: "hash") as? String
                     self.notifyControler()
                 }
             } catch let error as NetworkError {
@@ -66,11 +66,28 @@ extension MapDatasource {
         
         mapScreenDatasourceDelegate?.didReceiveMonitoringLocations(nearbyRegions: result)
     }
+    
+    func getNearestRegion(from currentLocation: CLLocation) -> Location? {
+        let allRegions = self.database.fetch(with: Location.all)
+        
+        //Calulate distance of each region's center to currentLocation
+        for region in allRegions {
+            region.distanceFromCurrentLocation = currentLocation.distance(from: CLLocation(latitude: region.latitude, longitude: region.longitude))
+        }
+        
+        let result = nearbyRegions(from: allRegions, limit: 1)
+        
+        guard let firstRegion = result.first else {
+            return nil
+        }
+        
+        return firstRegion
+    }
 }
 
 
-extension MapDatasource {
-    private func saveLocations(_ locations: [LocationObject]) {
+extension LocationsDatasource {
+    func saveLocations(_ locations: [LocationObject]) {
         do {
             print("Set valid into false")
             try self.database.update(type: LocationObject.self, where: nil, setValues: ["isValid" : false])
@@ -107,7 +124,7 @@ extension MapDatasource {
         return result
     }
     
-    private func notifyControler() {
+    func notifyControler() {
         print("Notify controler")
         let locations = self.database.fetch(with: Location.all)
         self.mapScreenDatasourceDelegate?.didReceiveLocations(locations: locations)
