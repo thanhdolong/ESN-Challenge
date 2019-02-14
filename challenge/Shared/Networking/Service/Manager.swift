@@ -16,21 +16,29 @@ import Unbox
 //    func post(resourceUrl: EndPoint, params: [String: Any]?, paramsHead: [String: String]?, completion: @escaping(Any?, HTTPURLResponse?, NetworkError?) -> Void)
 //}
 
+enum postType {
+    case formUrlencoded
+    case formData
+}
+
 class Manager<EndPoint: EndPointType> {
     
     private let networkCLient = NetworkClient()
     
-    func get(resourceUrl: EndPoint,
+    func getJson(resourceUrl: EndPoint,
              params: [String : Any]?,
              paramsHead: [String : String]?,
              completion: @escaping (Any? , HTTPURLResponse?, NetworkError?) -> Void) {
         
         let resourceUrl = resourceUrl.baseURL.appendingPathComponent(resourceUrl.path)
         
-        networkCLient.requestFor(resourceUrl: resourceUrl,
+        let encoding: URLEncoding = URLEncoding(destination: .queryString)
+        
+        networkCLient.requestJsonFor(resourceUrl: resourceUrl,
                                  method: .get,
-                                 parametersBody: nil,
-                                 parametersHead: paramsHead) { (response, status) in
+                                 parametersBody: params,
+                                 parametersHead: paramsHead,
+                                 encoding: encoding) { (response, status) in
                                     
             switch status {
                 case .success:
@@ -41,17 +49,44 @@ class Manager<EndPoint: EndPointType> {
         }
     }
     
+    func getData(resourceUrl: EndPoint,
+                 params: [String : Any]?,
+                 paramsHead: [String : String]?,
+                 completion: @escaping (Data? , HTTPURLResponse?, NetworkError?) -> Void) {
+        
+        let resourceUrl = resourceUrl.baseURL.appendingPathComponent(resourceUrl.path)
+        
+        let encoding: URLEncoding = URLEncoding(destination: .queryString)
+        
+        networkCLient.requestDataFor(resourceUrl: resourceUrl,
+                                     method: .get,
+                                     parametersBody: params,
+                                     parametersHead: paramsHead,
+                                     encoding: encoding) { (response, status) in
+                                        
+                                        switch status {
+                                        case .success:
+                                            completion(response.result.value, response.response, nil)
+                                        case .failure:
+                                            completion(nil, nil, NetworkError(response: response.response))
+                                        }
+        }
+    }
+    
     func post(resourceUrl: EndPoint,
-             params: [String : Any]?,
-             paramsHead: [String : String]?,
-             completion: @escaping (Any? , HTTPURLResponse?, NetworkError?) -> Void) {
+              paramsHead: [String : String]?,
+              paramsBody: [String : Any]?,
+              completion: @escaping (Any? , HTTPURLResponse?, NetworkError?) -> Void) {
         
         let resourceUrl = resourceUrl.baseURL.appendingPathComponent(resourceUrl.path)
 
-        networkCLient.requestFor(resourceUrl: resourceUrl,
+        let encoding: URLEncoding = URLEncoding.default
+        
+        networkCLient.requestJsonFor(resourceUrl: resourceUrl,
                                  method: .post,
-                                 parametersBody: params,
-                                 parametersHead: paramsHead) { (response, status) in
+                                 parametersBody: paramsBody,
+                                 parametersHead: paramsHead,
+                                 encoding: encoding) { (response, status) in
                                     
                                     switch status {
                                     case .success:
