@@ -32,11 +32,14 @@
                                 <rect key="frame" x="100" y="701" width="175" height="42"/>
                                 <color key="backgroundColor" red="0.98823529409999999" green="0.4549019608" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="42" id="3ju-x2-VLF"/>
+                                    <constraint firstAttribute="height" constant="42" id="fwk-GE-wrn"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="17"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="CHECK"/>
+                                <connections>
+                                    <action selector="checkLocation:" destination="whu-8P-pdE" eventType="touchUpInside" id="D5N-Vr-i4O"/>
+                                </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Fd-FW-kMV">
                                 <rect key="frame" x="309" y="68" width="50" height="84"/>
@@ -44,11 +47,12 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="DhS-kI-O4a">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="84"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oD8-Jb-ck4" userLabel="Info">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tds-IN-NyR">
                                                 <rect key="frame" x="0.0" y="0.0" width="50" height="41.666666666666664"/>
                                                 <color key="tintColor" red="0.98823529409999999" green="0.4549019608" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                                <state key="normal" image="sync"/>
                                                 <connections>
-                                                    <action selector="openSettings:" destination="whu-8P-pdE" eventType="touchUpInside" id="zL0-Z7-emu"/>
+                                                    <action selector="syncLocation:" destination="whu-8P-pdE" eventType="touchUpInside" id="9r1-Vg-wa9"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bih-zm-d6f" userLabel="Zoom">
@@ -77,22 +81,24 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="opi-nf-jGt" firstAttribute="bottom" secondItem="XEm-SM-Im6" secondAttribute="bottom" constant="35" id="5Hh-Sf-BfK"/>
                             <constraint firstItem="opi-nf-jGt" firstAttribute="bottom" secondItem="iaZ-8Y-ZKR" secondAttribute="bottom" id="5dL-gs-YjY"/>
-                            <constraint firstItem="opi-nf-jGt" firstAttribute="bottom" secondItem="XEm-SM-Im6" secondAttribute="bottom" constant="35" id="8UI-XO-A1z"/>
                             <constraint firstItem="iaZ-8Y-ZKR" firstAttribute="leading" secondItem="opi-nf-jGt" secondAttribute="leading" id="8Yr-gj-jA5"/>
-                            <constraint firstItem="opi-nf-jGt" firstAttribute="trailing" secondItem="XEm-SM-Im6" secondAttribute="trailing" constant="100" id="Qlt-Hk-3i2"/>
                             <constraint firstItem="4Fd-FW-kMV" firstAttribute="top" secondItem="opi-nf-jGt" secondAttribute="top" constant="24" id="eVQ-8J-UyU"/>
                             <constraint firstItem="iaZ-8Y-ZKR" firstAttribute="top" secondItem="nh4-rC-D09" secondAttribute="top" id="goL-TB-E7I"/>
                             <constraint firstItem="opi-nf-jGt" firstAttribute="trailing" secondItem="4Fd-FW-kMV" secondAttribute="trailing" constant="16" id="iuz-u5-IdY"/>
-                            <constraint firstItem="XEm-SM-Im6" firstAttribute="leading" secondItem="opi-nf-jGt" secondAttribute="leading" constant="100" id="oMm-Bz-zva"/>
+                            <constraint firstItem="opi-nf-jGt" firstAttribute="trailing" secondItem="XEm-SM-Im6" secondAttribute="trailing" constant="100" id="lfT-14-8Eh"/>
+                            <constraint firstItem="XEm-SM-Im6" firstAttribute="centerX" secondItem="nh4-rC-D09" secondAttribute="centerX" id="mU4-tS-L6s"/>
+                            <constraint firstItem="XEm-SM-Im6" firstAttribute="leading" secondItem="opi-nf-jGt" secondAttribute="leading" constant="100" id="qgk-fM-RDa"/>
                             <constraint firstItem="opi-nf-jGt" firstAttribute="trailing" secondItem="iaZ-8Y-ZKR" secondAttribute="trailing" id="sLT-Z4-DH9"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="opi-nf-jGt"/>
                         <connections>
                             <outlet property="checkButton" destination="XEm-SM-Im6" id="GFS-Cj-qjP"/>
                             <outlet property="controlsContainer" destination="4Fd-FW-kMV" id="D5J-GF-NKq"/>
-                            <outlet property="infoButton" destination="oD8-Jb-ck4" id="N4u-6h-33o"/>
                             <outlet property="map" destination="iaZ-8Y-ZKR" id="vvB-sk-yX8"/>
+                            <outlet property="syncButton" destination="tds-IN-NyR" id="8io-52-n69"/>
+                            <outlet property="syncLocation" destination="tds-IN-NyR" id="i5N-d7-ygA"/>
                             <outlet property="zoomUserLocationButton" destination="bih-zm-d6f" id="rn3-2r-K5q"/>
                         </connections>
                     </view>
@@ -105,5 +111,6 @@
     <resources>
         <image name="location" width="19" height="19"/>
         <image name="locationHighlighted" width="19" height="19"/>
+        <image name="sync" width="24" height="24"/>
     </resources>
 </document>

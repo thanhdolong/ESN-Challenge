@@ -15,13 +15,15 @@ import Unbox
 protocol LocationsDatasourceDelegate: class {
     func didReceiveCircularOverlay(overlays: [MKOverlay])
     func didReceiveLocations(locations: [Location])
-    func didReceiveMonitoringLocations(nearbyRegions: [CLCircularRegion])
+    func didReceiveAlert(message: String)
 }
 
 class LocationsDatasource {
+    var lastCalculation: CLLocation?
     let database: Database
+    var locations: [Location]?
     let sandboxAPI: SandboxAPI = SandboxAPI()
-    let locationAPI: LocationAPI = LocationAPI()
+    let api: ChallengeAPI = ChallengeAPI()
     
     weak var mapScreenDatasourceDelegate: LocationsDatasourceDelegate?
     
@@ -34,7 +36,7 @@ extension LocationsDatasource {
     func loadLocations(){
         self.notifyControler()
         
-        locationAPI.geAllLocationsAsObjects { (respond) in
+        api.geAllLocationsAsObjects { (respond) in
             do {
                 print("status code \(try respond.getStatusCode())")
                 if (try respond.getStatusCode() == 200) {
@@ -46,40 +48,43 @@ extension LocationsDatasource {
                     self.notifyControler()
                 }
             } catch let error as NetworkError {
+                self.sendMessage(text: error.errorMessages)
                 print("Network error: \(error.errorMessages)")
             }
             catch {
+                self.sendMessage(text: error.localizedDescription)
                 print("Unexpected error: \(error).")
             }
         }
     }
     
-    func notifyAboutClosestMonitoringRegions(from currentLocation: CLLocation) {
-        let allRegions = self.database.fetch(with: Location.all)
-        
-        //Calulate distance of each region's center to currentLocation
-        for region in allRegions {
-            region.distanceFromCurrentLocation = currentLocation.distance(from: CLLocation(latitude: region.latitude, longitude: region.longitude))
+    func canRecalculateDistance(from currentLocation: CLLocation) -> Bool {
+        if let lastCalculation = lastCalculation, lastCalculation.distance(from: currentLocation) < 500 {
+            return false
         }
         
-        let result = setRegions(for: nearbyRegions(from: allRegions, limit: 3))
-        
-        mapScreenDatasourceDelegate?.didReceiveMonitoringLocations(nearbyRegions: result)
+        return true
     }
     
-    func getNearestRegion(from currentLocation: CLLocation) -> Location? {
+    func calculateDistance(from currentLocation: CLLocation) {
         let allRegions = self.database.fetch(with: Location.all)
         
         //Calulate distance of each region's center to currentLocation
         for region in allRegions {
             region.distanceFromCurrentLocation = currentLocation.distance(from: CLLocation(latitude: region.latitude, longitude: region.longitude))
         }
+        
+        lastCalculation = currentLocation
+        locations = allRegions
+    }
+    
+    func getNearestRegion(from currentLocation: CLLocation, limit: Int) -> Location? {
+        //MARK: Calulate distance of each region's center to currentLocation
+        guard let allRegions = locations else { return nil }
         
         let result = nearbyRegions(from: allRegions, limit: 1)
         
-        guard let firstRegion = result.first else {
-            return nil
-        }
+        guard let firstRegion = result.first else { return nil }
         
         return firstRegion
     }
@@ -87,6 +92,29 @@ extension LocationsDatasource {
 
 
 extension LocationsDatasource {
+    func checkLocation(location: Location) {
+        api.sendLocationCheck(location: location.identifier) { (respond) in
+            do {
+                print("status code \(try respond.getStatusCode())")
+                if (try respond.getStatusCode() == 200) {
+                    if let body = try respond.getBody() as? [String: Any],
+                        let message = body["message"] as? String {
+                        self.sendMessage(text: message)
+                    }
+                }
+            } catch let error as NetworkError {
+                self.sendMessage(text: error.errorMessages)
+                print("Network error: \(error.errorMessages)")
+            }
+            catch {
+                self.sendMessage(text: error.localizedDescription)
+                print("Unexpected error: \(error).")
+            }
+            
+            UIApplication.shared.endIgnoringInteractionEvents()
+        }
+    }
+    
     func saveLocations(_ locations: [LocationObject]) {
         do {
             print("Set valid into false")
@@ -102,6 +130,10 @@ extension LocationsDatasource {
         }
     }
     
+    private func sendMessage(text: String) {
+        mapScreenDatasourceDelegate?.didReceiveAlert(message: text)
+    }
+    
     private func nearbyRegions(from allRegions: [Location], limit: Int) -> ArraySlice<Location> {
         let nearbyRegions = allRegions.sorted { (firstRegion, secondRegion) -> Bool in
             guard let firstDistance = firstRegion.distanceFromCurrentLocation, let secondDistance = secondRegion.distanceFromCurrentLocation else { return false }
@@ -115,18 +147,21 @@ extension LocationsDatasource {
     private func setRegions(for regions: ArraySlice<Location>) -> [CLCircularRegion] {
         var result = [CLCircularRegion]()
         for region in regions {
-            let region = CLCircularRegion(center: region.coordinate, radius: region.radius, identifier: region.identifier)
+            let region = CLCircularRegion(center: region.coordinate, radius: region.radius, identifier: "\(region.identifier) \(region.name)" )
             region.notifyOnEntry = true
             region.notifyOnExit = true
             result.append(region)
         }
-        
+
         return result
     }
     
     func notifyControler() {
+        self.locations = self.database.fetch(with: Location.all)
+        guard let locations = self.locations else { return }
+        print(locations)
+        
         print("Notify controler")
-        let locations = self.database.fetch(with: Location.all)
         self.mapScreenDatasourceDelegate?.didReceiveLocations(locations: locations)
         self.mapScreenDatasourceDelegate?.didReceiveCircularOverlay(overlays: locations.map({ (location) -> MKOverlay in
             location.circularOverlay

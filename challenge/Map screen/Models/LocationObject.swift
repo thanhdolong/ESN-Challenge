@@ -13,7 +13,7 @@ import RealmSwift
 
 class LocationObject: Object, Unboxable {
     
-    @objc dynamic private var identifier: String = ""
+    @objc dynamic var identifier: Int = 0
     @objc dynamic var name: String = ""
     @objc dynamic var type: String = ""
     @objc dynamic var latitude: Double = 0.0
@@ -37,13 +37,14 @@ class LocationObject: Object, Unboxable {
 
 extension LocationObject {
     
-    convenience init(title: String,
+    convenience init(identifier: Int,
+                     title: String,
                      type: String,
                      latitude: Double,
                      longitude: Double) {
         self.init()
         
-        self.identifier = title
+        self.identifier = identifier
         self.name = title
         self.type = type
         self.latitude = latitude
@@ -53,7 +54,7 @@ extension LocationObject {
     convenience init(location: Location) {
         self.init()
         
-        self.identifier = location.name
+        self.identifier = location.identifier
         self.name = location.name
         self.type = location.type
         self.latitude = location.latitude
@@ -62,7 +63,7 @@ extension LocationObject {
 }
 
 extension LocationObject {
-    func getID() -> String {
+    func getID() -> Int {
         return identifier
     }
 }

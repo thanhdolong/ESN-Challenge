@@ -12,6 +12,8 @@ import MapKit
 public final class MapView: UIView {
     private let theme = Theme()
     
+    @IBOutlet public var syncLocation: UIButton!
+    
     @IBOutlet public var checkButton: UIButton! {
         didSet {
             checkButton.layer.cornerRadius = 5
@@ -24,9 +26,9 @@ public final class MapView: UIView {
         }
     }
     
-    @IBOutlet public var infoButton: UIButton! {
+    @IBOutlet public var syncButton: UIButton! {
         didSet {
-            infoButton.tintColor = theme.colours.primaryColor
+            syncButton.tintColor = theme.colours.primaryColor
         }
     }
     
