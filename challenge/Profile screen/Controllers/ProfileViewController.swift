@@ -8,11 +8,19 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
-    private let user: User
+protocol profileViewControllerDelegate: class {
+    func logoutPressed()
+}
+
+class ProfileViewController: UITableViewController {
+    private var indicator: UIView?
+    private let theme = Theme()
+    fileprivate var viewModel: ProfileViewModel
+    weak var profileViewControllerDelegate: profileViewControllerDelegate?
+    weak var loginViewControllerDelegate: LoginViewControllerDelegate?
     
-    init(user: User) {
-        self.user = user
+    init(database: Database) {
+        self.viewModel = ProfileViewModel(database: database)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -21,34 +29,69 @@ class ProfileViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        print("Profile controler")
-        // Do any additional setup after loading the view.
+    @objc func openSettings() {
+        let vc = NavigationController(rootViewController: SettingsTableViewController.init())
+        self.present(vc, animated: true, completion: nil)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if user.accessToken == nil {
-            print("Neni token")
-            let login = LoginViewController.storyboardInit()
-            self.definesPresentationContext = true
-            login.modalPresentationStyle = .overCurrentContext
-            login.modalTransitionStyle = .flipHorizontal
-            self.present(login, animated: true, completion: nil)
-            return
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupNavigation()
+        setupTableView()
+    }
+    
+    private func setupNavigation() {
+        let settingsImage = UIImage(named: "settings")?.withRenderingMode(.alwaysTemplate)
+        let settingsButton = UIBarButtonItem(image: settingsImage, style: .plain, target: self, action: #selector(openSettings))
+        navigationItem.rightBarButtonItem = settingsButton
+    }
+    
+    private func setupTableView() {
+        tableView.dataSource = viewModel
+        
+        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.register(AtributeCell.nib, forCellReuseIdentifier: AtributeCell.reuseIdentifier)
+        tableView.register(ProfileHeaderCell.nib, forCellReuseIdentifier: ProfileHeaderCell.reuseIdentifier)
+        tableView.register(LogoutCell.nib, forCellReuseIdentifier: LogoutCell.reuseIdentifier)
+        tableView.register(CheckedLocationCell.nib, forCellReuseIdentifier: CheckedLocationCell.reuseIdentifier)
+        
+        tableView.tableFooterView = UIView()
+        tableView.separatorStyle = .none
+        
+        viewModel.profileViewModelDelegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if viewModel.fetchUser() == nil {
+            let offset = navigationController?.navigationBar.frame.size.height ?? 0
+            indicator = displayIndicator(onView: self.view, offset: -(offset * 2))
+        } else {
+            viewModel.reload()
         }
         
-       print("V pořádku")
+        viewModel.loadProfile()
+        
     }
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        header.backgroundView?.backgroundColor = .white
     }
-    */
+}
 
+extension ProfileViewController: ProfileViewModelDelegate {
+    func openLogin() {
+        profileViewControllerDelegate?.logoutPressed()
+    }
+    
+    func didRecieveDataUpdate() {
+        tableView.reloadData()
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        guard let indicator = indicator else { return }
+        removeIndicator(indicator: indicator)
+    }
 }
