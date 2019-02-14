@@ -8,22 +8,22 @@
 
 import Foundation
 
-class MoreSection: Section {
-    var type: SectionType {
+class MoreSection: SettingsSection {
+    var type: SettingsSectionType {
         return .more
     }
     
-    var items : [Item]
+    var items : [SettingsItem]
     
-    var sectionTitle: String {
-        return "More"
+    var sectionTitle: String? {
+        return "About ESN Challenge"
     }
     
     var rowCount: Int {
         return items.count
     }
     
-    init(){
-        items = [.rateTheApp,.recomendTheApp,.textMessage]
+    init(items: [SettingsItem]){
+        self.items = items
     }
 }

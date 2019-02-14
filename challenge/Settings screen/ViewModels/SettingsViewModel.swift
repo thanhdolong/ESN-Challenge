@@ -9,34 +9,43 @@
 import Foundation
 import UIKit
 
-enum SectionType {
+enum SettingsSectionType {
     case general
     case links
     case more
 }
 
-enum Item {
+enum SettingsItem {
     case blog
-    case facebook
     case instagram
     case rateTheApp
     case recomendTheApp
     case textMessage
+    case termsOfService
+    case help
+    case addLocation
+    case logout
     
     var text: String {
         switch self {
         case .blog:
-            return "Official ESN site"
-        case .facebook:
-            return "Facebook"
+            return "Check out official site"
         case .instagram:
-            return "Instagram"
+            return "Follow us on Instagram"
         case .rateTheApp:
             return "Rate the app"
         case .recomendTheApp:
-            return "Reccomend the app"
+            return "Share with Friends"
         case .textMessage:
-            return "Text message"
+            return "Contact us"
+        case .termsOfService:
+            return "Term of service"
+        case .help:
+            return "Get help"
+        case .addLocation:
+            return "Add new location"
+        case .logout:
+            return "Logout"
         }
     }
     
@@ -44,8 +53,6 @@ enum Item {
         switch self {
         case .blog:
             return UIImage(named: "web")
-        case .facebook:
-            return UIImage(named: "facebook")
         case .instagram:
             return UIImage(named: "instagram")
         case .rateTheApp:
@@ -54,23 +61,32 @@ enum Item {
             return UIImage(named: "recommend")
         case .textMessage:
             return UIImage(named: "message")
+        case .termsOfService:
+            return UIImage(named: "sync")
+        case .help:
+            return UIImage(named: "sync")
+        case .addLocation:
+            return UIImage(named: "sync")
+        case .logout:
+            return nil
         }
     }
 }
 
-protocol Section {
-    var type: SectionType { get }
-    var sectionTitle: String { get }
-    var items: [Item] { get }
+protocol SettingsSection {
+    var type: SettingsSectionType { get }
+    var sectionTitle: String? { get }
+    var items: [SettingsItem] { get }
     var rowCount: Int { get }
 }
 
 class SettingsViewModel: NSObject {
-    var sections = [Section]()
+    var sections = [SettingsSection]()
     
     override init() {
-        sections.append(LinkSection())
-        sections.append(MoreSection())
+//        sections.append(LocationSection(user: Token(), items: [.sync, .help]))
+        sections.append(LinkSection(items: [.blog, .instagram]))
+        sections.append(MoreSection(items: [.rateTheApp,.recomendTheApp,.textMessage, .termsOfService]))
     }
 }
 
@@ -89,32 +105,20 @@ extension SettingsViewModel: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = sections[indexPath.section]
+        
+
+        
         let cell = UITableViewCell()
         let theme = Theme()
         
         cell.textLabel?.textColor = theme.colours.secondaryColor
         cell.textLabel?.font = theme.fonts.bodyRegular
-        switch section.type {
-        case .general:
-           return UITableViewCell()
-        case .links:
-            if let item = section as? LinkSection {
-                cell.textLabel?.text = item.items[indexPath.row].text
-                cell.imageView?.image = item.items[indexPath.row].icon
-                cell.accessoryType = .disclosureIndicator
-                return cell
-            }
-        case .more:
-            if let item = section as? MoreSection {
-                cell.textLabel?.text = item.items[indexPath.row].text
-                cell.imageView?.image = item.items[indexPath.row].icon
-                cell.accessoryType = .disclosureIndicator
-                return cell
-            }
 
-        }
+        cell.textLabel?.text = section.items[indexPath.row].text
+        cell.imageView?.image = section.items[indexPath.row].icon
+        cell.accessoryType = .disclosureIndicator
+    
         
-        
-        return UITableViewCell()
+        return cell
     }
 }
