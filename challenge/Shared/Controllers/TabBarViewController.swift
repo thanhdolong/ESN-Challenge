@@ -13,15 +13,14 @@ class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initItems()
-        // Do any additional setup after loading the view.
     }
     
 
     private func initItems() -> Void {
         // 1.
-        let firstVC = HighScoresViewController.storyboardInit()
+        let firstVC = embedControllerToNavigationController(vc: LeaderboardsViewController(database: Database()))
         let secondVC = MapViewController.storyboardInit()
-        let thirdVC = ProfileViewController(user: User())
+        let thirdVC = ProfileContainerViewController(user: Token())
         
         
         let firstTaBBarItem = UITabBarItem(title: "HIGH SCORES",
@@ -45,6 +44,8 @@ class TabBarViewController: UITabBarController {
         self.tabBar.layer.backgroundColor = UIColor(red: 255, green: 255, blue: 255).withAlphaComponent(0).cgColor
         
         self.viewControllers = [firstVC, secondVC, thirdVC]
+        
+        self.selectedIndex = 1
     }
     
     
@@ -52,15 +53,5 @@ class TabBarViewController: UITabBarController {
         let navigationController = NavigationController(rootViewController: vc)
         return navigationController
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

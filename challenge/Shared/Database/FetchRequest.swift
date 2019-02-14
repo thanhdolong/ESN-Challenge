@@ -17,6 +17,7 @@ struct FetchRequest<Model, RealmObject: Object> {
 
 extension SortDescriptor {
     static let name = SortDescriptor(keyPath: "name", ascending: true)
+    static let uiid = SortDescriptor(keyPath: "uiid", ascending: true)
 }
 
 extension Location {
@@ -27,5 +28,4 @@ extension Location {
         
         return Array(result)
     }
-    
 }

@@ -19,11 +19,36 @@ extension UIViewController {
     }
 }
 
+extension UIViewController {
+    func displayIndicator(onView: UIView, offset: CGFloat = 0) -> UIView {
+        
+        let spinnerView = UIView.init(frame: onView.bounds)
+        spinnerView.backgroundColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0)
+        
+        let activityIndicator = UIActivityIndicatorView.init(style: .gray)
+        activityIndicator.startAnimating()
+        activityIndicator.center = CGPoint(x: view.center.x, y: view.center.y + offset)
+        
+        DispatchQueue.main.async {
+            spinnerView.addSubview(activityIndicator)
+            onView.addSubview(spinnerView)
+        }
+        
+        return spinnerView
+    }
+    
+    func removeIndicator(indicator: UIView) {
+        DispatchQueue.main.async {
+            indicator.removeFromSuperview()
+        }
+    }
+}
+
 // MARK: Zoom user location Extensions
 extension MKMapView {
     func zoomToUserLocation() {
         guard let coordinate = userLocation.location?.coordinate else { return }
-        let region = MKCoordinateRegion.init(center: coordinate, latitudinalMeters: 2500, longitudinalMeters: 2500)
+        let region = MKCoordinateRegion.init(center: coordinate, latitudinalMeters: 2000, longitudinalMeters: 2000)
         setRegion(region, animated: true)
     }
 }
@@ -39,8 +64,9 @@ extension UIColor {
     }
 }
 
-// MARK: Get top most UIViewController
+
 extension UIApplication {
+    // MARK: Get top most UIViewController
     class func topViewController(viewController: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
         if let nav = viewController as? UINavigationController {
             return topViewController(viewController: nav.visibleViewController)
@@ -55,4 +81,23 @@ extension UIApplication {
         }
         return viewController
     }
+    
+    class func tryURL(urls: [String]) {
+        let application = UIApplication.shared
+        for url in urls {
+            if let url = URL(string: url), application.canOpenURL(url) {
+                if #available(iOS 10.0, *) {
+                    application.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
+                } else {
+                    application.openURL(url)
+                }
+                return
+            }
+        }
+    }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+    return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
 }

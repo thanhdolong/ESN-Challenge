@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 struct LocalDatabase {
-    static let userSessionKey = "com.save.challenge"
+    static let userSessionKey = "org.esncz.esnchallenge"
     
     static var databaseHash: String? {
         get {
