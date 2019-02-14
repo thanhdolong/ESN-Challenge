@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 import SwinjectStoryboard
 
-class HighScoresViewController: UIViewController {
+class LeaderboardsViewController: UIViewController {
     var highScoresView: HighScoresView! {
         guard isViewLoaded else { return nil }
         return (view as! HighScoresView)
@@ -40,7 +40,7 @@ class HighScoresViewController: UIViewController {
     }
     
     @IBAction func logout(_ sender: UIButton) {
-        let user = User()
+        let user = Token()
         user.deleteAccessToken()
     }
 }
