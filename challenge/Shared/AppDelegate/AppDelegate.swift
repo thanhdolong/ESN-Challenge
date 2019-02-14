@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 import CoreData
 
 @UIApplicationMain
@@ -21,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = TabBarViewController()
         window?.makeKeyAndVisible()
+        FirebaseApp.configure()
         return true
     }
 

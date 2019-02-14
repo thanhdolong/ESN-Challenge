@@ -18,7 +18,7 @@ enum DatabaseError: Error {
 final class Database {
     
     private let realm: Realm
-    init(realm: Realm = try! Realm()) {
+    init(realm: Realm = try! Realm(configuration: Realm.Configuration(deleteRealmIfMigrationNeeded: true))) {
         self.realm = realm
     }
     
@@ -87,14 +87,14 @@ final class Database {
     }
     
     
-    func fetch<Model, RealmObject: Object>(where predicate: NSPredicate?, sortDescriptors: [SortDescriptor], transformer: (Results<RealmObject>) -> Model) -> Model {
+    func fetch<Model, RealmObject: Object>(where predicate: NSPredicate?, sortDescriptors: [SortDescriptor]?, transformer: (Results<RealmObject>) -> Model) -> Model {
         var results = realm.objects(RealmObject.self)
         
         if let predicate = predicate {
             results = results.filter(predicate)
         }
         
-        if sortDescriptors.count > 0 {
+        if let sortDescriptors = sortDescriptors, sortDescriptors.count > 0 {
             results = results.sorted(by: sortDescriptors)
         }
         
@@ -126,6 +126,18 @@ final class Database {
                     results = results.filter(predicate)
                 }
                 
+                realm.delete(results)
+            }
+        } catch (let error) {
+            print(error)
+            throw DatabaseError.deleteDataError
+        }
+    }
+    
+    func delete<RealmObject: Object>(type: RealmObject.Type) throws {
+        do {
+            try realm.write {
+                let results = realm.objects(type)
                 realm.delete(results)
             }
         } catch (let error) {
