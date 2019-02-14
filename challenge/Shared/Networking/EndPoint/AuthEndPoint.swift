@@ -17,8 +17,8 @@ public enum AuthEndPoint {
 extension AuthEndPoint: EndPointType {
     fileprivate var environmentBaseURL : String {
         switch NetworkClient.environment {
-        case .production: return "https://httpstat.us/"
-        case .develop: return "http://192.168.77.47:8888/api/"
+        case .production: return "localhost:8888/api"
+        case .develop: return "https://fiesta.esncz.org/api/"
         }
     }
     

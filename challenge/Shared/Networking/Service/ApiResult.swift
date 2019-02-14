@@ -10,6 +10,10 @@ import Foundation
 import Unbox
 import Foundation
 
+enum ApiResultEror: Error {
+    case runtimeError(String)
+}
+
 class ApiResult<UnboxableObject: Unboxable> {
     private let data: Any?
     private let error: NetworkError?
@@ -63,14 +67,23 @@ class ApiResult<UnboxableObject: Unboxable> {
     }
     
     func unwrap() throws -> [UnboxableObject] {
-        guard let data = data as? [[String: AnyObject]] else {
-            if let error = error { throw error }
-            throw NetworkError.unsuccessError("[DataError] An error occured while trying unwrap responze")
-        }
-        
         do {
-            let unboxedJSON: [UnboxableObject] = try unbox(dictionaries: data)
-            return unboxedJSON
+            if let data = data as? [String: AnyObject] {
+                print("1) unbox [String: AnyObject]")
+                let unboxedJSON: UnboxableObject = try unbox(dictionary: data)
+                return [unboxedJSON]
+            }else if let data = data as? [[String: AnyObject]] {
+                print("2) unbox [[String: AnyObject]]")
+                let unboxedJSON: [UnboxableObject] = try unbox(dictionaries: data)
+                return unboxedJSON
+            } else if let data = data as? Data {
+                print("3) unbox Data")
+                let unboxedJSON: [UnboxableObject] = try unbox(data: data)
+                return unboxedJSON
+            } else {
+                if let error = error { throw error }
+                throw ApiResultEror.runtimeError("[DataError] An error occured while trying unwrap responze")
+            }
         } catch (let error){
             throw error
         }

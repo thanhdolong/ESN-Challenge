@@ -1,19 +1,18 @@
 //
-//  locationEndPoint.swift
+//  ProfileEndPoint.swift
 //  challenge
 //
-//  Created by Thành Đỗ Long on 13/11/2018.
+//  Created by Thành Đỗ Long on 11/12/2018.
 //  Copyright © 2018 Thành Đỗ Long. All rights reserved.
 //
 
 import Foundation
 
-public enum LocationEndPoint {
-    case allLocation
-    case location(id:Int)
+public enum ProfileEndPoint {
+    case profile
 }
 
-extension LocationEndPoint: EndPointType {
+extension ProfileEndPoint: EndPointType {
     fileprivate var environmentBaseURL : String {
         switch NetworkClient.environment {
         case .production: return "localhost:888/api"
@@ -29,10 +28,8 @@ extension LocationEndPoint: EndPointType {
     
     var path: String {
         switch self {
-        case .location(let id):
-            return "location/\(id)"
-        case .allLocation:
-            return "location"
+        case .profile:
+            return "profile"
         }
     }
 }

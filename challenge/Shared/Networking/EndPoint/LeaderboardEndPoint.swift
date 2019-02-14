@@ -8,12 +8,11 @@
 
 import Foundation
 
-public enum LocationEndPoint {
-    case allLocation
-    case location(id:Int)
+public enum LeaderboardEndPoint {
+    case allPlayers
 }
 
-extension LocationEndPoint: EndPointType {
+extension LeaderboardEndPoint: EndPointType {
     fileprivate var environmentBaseURL : String {
         switch NetworkClient.environment {
         case .production: return "localhost:888/api"
@@ -29,10 +28,8 @@ extension LocationEndPoint: EndPointType {
     
     var path: String {
         switch self {
-        case .location(let id):
-            return "location/\(id)"
-        case .allLocation:
-            return "location"
+        case .allPlayers:
+            return "leaderboards"
         }
     }
 }
