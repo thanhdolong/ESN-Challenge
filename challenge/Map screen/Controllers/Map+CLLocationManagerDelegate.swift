@@ -11,43 +11,22 @@ import CoreLocation
 extension MapViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        
-        // MARK - make sure region monitoring is supported
-        if !CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self){
-            mapScreenView.checkButton.isHidden = false
-            showAlert(withTitle:"Error", message: "Geofencing is not supported on this device!")
-            return
-        }
-        
-        // Mark: Monitoring must have always location
-        if CLLocationManager.authorizationStatus() != .authorizedAlways {
-            showAlert(withTitle:"Warning", message: "Your geotification is saved but will only be activated once you grant Geotify permission to access the device location.")
-        }
-        
-        for region in locationManager.monitoredRegions {
-            print("Monitored region: \(region.identifier)")
+        switch status {
+        case .notDetermined, .authorizedAlways, .authorizedWhenInUse:
+            break
+        case .restricted, .denied:
+            showAlert(withTitle:"Warning", message: "Your geotification is saved but will only be activated once you grant ESN Challenge permission to access the device location.")
+            locationManager.requestWhenInUseAuthorization()
         }
     }
-    
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let lastLocation = locations.last else {return}
-        mapScreenDatasource.notifyAboutClosestMonitoringRegions(from: lastLocation)
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
-        switch state {
-        case .unknown:
-            print("Cannot determine state of the region.")
-            mapScreenView.checkButton.isHidden = false
-        case .inside:
-            print("Inside the region")
-            mapScreenView.checkButton.isHidden = false
-        case .outside:
-            print("Outside the region")
-            mapScreenView.checkButton.isHidden = true
+        guard let lastLocation = locations.last else { return }
+        if locationsDatasource.canRecalculateDistance(from: lastLocation) {
+            locationsDatasource.calculateDistance(from: lastLocation)
         }
     }
+    
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         if let error = error as? CLError, error.code == .denied {
@@ -59,11 +38,6 @@ extension MapViewController: CLLocationManagerDelegate {
         }
         
         print("Location Manager failed with the following error: \(error)")
-    }
-    
-    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
-        mapScreenView.checkButton.isHidden = false
-        print("Monitoring failed for region with identifier: \(region!.identifier) with error: \(error.localizedDescription)")
     }
 }
 
