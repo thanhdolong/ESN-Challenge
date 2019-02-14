@@ -11,9 +11,25 @@ import StoreKit
 
 class SettingsTableViewController: UITableViewController {
     fileprivate let viewModel = SettingsViewModel()
+    let api: ChallengeAPI = ChallengeAPI()
+    private var locationsDatasource: LocationsDatasource!
     private let safariController = SafariController()
     private let theme = Theme()
+    
+    init(){
+       super.init(nibName: nil, bundle: nil)
+    }
+    
 
+    init(locationsDatasource: LocationsDatasource){
+        self.locationsDatasource = locationsDatasource
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = NSLocalizedString("Settings", comment: "")
@@ -24,6 +40,7 @@ class SettingsTableViewController: UITableViewController {
         tableView.delegate = self
         tableView.dataSource = viewModel
         tableView.tableFooterView = UIView()
+        tableView.separatorStyle = .none
 
         let dismissIcon = UIImage(named: "close")?.withRenderingMode(.alwaysTemplate)
         let closeButton = UIBarButtonItem(image: dismissIcon, style: .plain, target: self, action: #selector(close))
@@ -61,28 +78,28 @@ class SettingsTableViewController: UITableViewController {
         
         switch viewModel.sections[indexPath.section].items[indexPath.row] {
         case .blog:
-            guard let url = URL(string: "https://www.esncz.org/") else {
+            guard let url = URL(string: "https://challenge.esncz.org") else {
                 return
             }
             safariController.openUrl(url: url)
-//        case .facebook:
-//            UIApplication.tryURL(urls: [
-//                "fb://profile/806356102767583",
-//                "https://www.facebook.com/acotedajis/"
-//                ])
-//        case .instagram:
-//            UIApplication.tryURL(urls: [
-//                "instagram://user?username=acotedajis",
-//                "https://www.instagram.com/acotedajis/?hl=cs"
-//                ])
+        case .instagram:
+            UIApplication.tryURL(urls: [
+                "instagram://user?username=ESNchallenge",
+                "https://www.instagram.com/ESNchallenge"
+                ])
         case .rateTheApp:
             displayReviewController()
 //        case .recomendTheApp:
         case .textMessage:
-            let email = "thanh.dolong@gmail.com"
+            let email = "challenge@esncz.org"
             if let url = URL(string: "mailto:\(email)") {
                 UIApplication.shared.open(url)
             }
+        case .termsOfService:
+            guard let url = URL(string: "https://challenge.esncz.org/sign/terms") else {
+                return
+            }
+            safariController.openUrl(url: url)
         default:
             print("Default - \(indexPath)")
         }

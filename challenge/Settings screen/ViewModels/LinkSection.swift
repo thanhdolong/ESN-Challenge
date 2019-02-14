@@ -9,24 +9,22 @@
 import Foundation
 import UIKit
 
-class LinkSection: Section {
-    var type: SectionType {
+class LinkSection: SettingsSection {
+    var type: SettingsSectionType {
         return .links
     }
     
-    let items : [Item]
+    let items : [SettingsItem]
     
-    var sectionTitle: String {
-        return "Links"
+    var sectionTitle: String? {
+        return "Quick links"
     }
     
     var rowCount: Int {
         return items.count
     }
     
-    init(){
-        items = [.blog,
-                 .facebook,
-                 .instagram]
+    init(items: [SettingsItem]){
+        self.items = items
     }
 }
