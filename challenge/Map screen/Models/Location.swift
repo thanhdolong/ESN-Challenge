@@ -30,6 +30,7 @@ final class Location: NSObject {
         }
         return currentLocation < radius ? .inside : .outside
     }
+    let points: Int
     
     var location: CLLocation { return CLLocation(latitude: latitude, longitude: longitude) }
     var circularOverlay: MKCircle { return MKCircle(center: location.coordinate, radius: radius) }
@@ -39,12 +40,14 @@ final class Location: NSObject {
          title: String,
          type: String,
          latitude: Double,
-         longitude: Double) {
+         longitude: Double,
+         points: Int) {
         self.identifier = identifier
         self.name = title
         self.type = type
         self.latitude = latitude
         self.longitude = longitude
+        self.points = points
     }
     
     init(location: LocationObject) {
@@ -53,6 +56,7 @@ final class Location: NSObject {
         self.type = location.type
         self.latitude = location.latitude
         self.longitude = location.longitude
+        self.points = location.points
     }
 }
 
@@ -71,7 +75,7 @@ extension Location: MKAnnotation {
 
     var subtitle: String? {
         get {
-            return self.type
+            return "\(self.type) ~ points: \(self.points) "
         }
     }
 

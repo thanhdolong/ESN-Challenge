@@ -19,6 +19,7 @@ class LocationObject: Object, Unboxable {
     @objc dynamic var latitude: Double = 0.0
     @objc dynamic var longitude: Double = 0.0
     @objc dynamic var isValid = true
+    @objc dynamic var points: Int = 0
     
     override static func primaryKey() -> String? {
         return "identifier"
@@ -32,6 +33,7 @@ class LocationObject: Object, Unboxable {
         self.type = try unboxer.unbox(key: "type")
         self.latitude = try unboxer.unbox(key: "lat")
         self.longitude = try unboxer.unbox(key: "lng")
+        self.points = try unboxer.unbox(key: "points")
     }
 }
 
@@ -41,7 +43,8 @@ extension LocationObject {
                      title: String,
                      type: String,
                      latitude: Double,
-                     longitude: Double) {
+                     longitude: Double,
+                     points: Int) {
         self.init()
         
         self.identifier = identifier
@@ -49,6 +52,7 @@ extension LocationObject {
         self.type = type
         self.latitude = latitude
         self.longitude = longitude
+        self.points = points
     }
     
     convenience init(location: Location) {
@@ -59,6 +63,7 @@ extension LocationObject {
         self.type = location.type
         self.latitude = location.latitude
         self.longitude = location.longitude
+        self.points = location.points
     }
 }
 
