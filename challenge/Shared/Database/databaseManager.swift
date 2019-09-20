@@ -46,7 +46,7 @@ final class Database {
     
     //    Insert method
     
-    func insertObjects(_ objects: [Object], update: Bool) throws {
+    func insertObjects(_ objects: [Object], update: Realm.UpdatePolicy) throws {
         do {
             try realm.write {
                 realm.add(objects, update: update)
@@ -61,7 +61,7 @@ final class Database {
         do {
             let object = reverseTransformer(model)
             try realm.write {
-                realm.add(object, update: true)
+                realm.add(object, update: .all)
             }
         } catch (let error) {
             print(error)

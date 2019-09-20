@@ -44,7 +44,7 @@ extension LeaderboardViewModel {
                 if (try respond.getStatusCode() == 200) {
                     let playerObject = try respond.unwrap()
                     try self.database.delete(type: PlayerObject.self)
-                    try self.database.insertObjects(playerObject, update: true)
+                    try self.database.insertObjects(playerObject, update: .all)
                     self.reload()
                 } else {
                     print("Status code is not 200")

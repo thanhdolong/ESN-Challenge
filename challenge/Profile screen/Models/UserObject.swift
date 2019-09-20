@@ -33,7 +33,7 @@ final class UserObject: Object, Unboxable {
         self.gender = try unboxer.unbox(key: "gender")
         self.checkedLocation = try unboxer.unbox(key: "checkedLocation")
         let unboxLocation: [LocationObject] = try unboxer.unbox(key: "locations")
-        locations.append(contentsOf: unboxLocation)
+        locations.append(objectsIn: unboxLocation)
     }
 }
 

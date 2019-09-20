@@ -121,7 +121,7 @@ extension LocationsDatasource {
             try self.database.update(type: LocationObject.self, where: nil, setValues: ["isValid" : false])
             
             print("Insert objects to Realm")
-            try self.database.insertObjects(locations, update: true)
+            try self.database.insertObjects(locations, update: .all)
             
             print("Delete invalid Locations")
             try self.database.delete(type: LocationObject.self, where: NSPredicate(format: "isValid = %i", false))

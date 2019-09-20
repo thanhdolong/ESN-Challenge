@@ -48,7 +48,7 @@ extension ProfileViewModel {
             do {
                 if (try respond.getStatusCode() == 200) {
                     let userObject = try respond.unwrap()
-                    try self.database.insertObjects(userObject, update: true)
+                    try self.database.insertObjects(userObject, update: .all)
                     self.reload()
                 } else {
                     try self.database.delete(type: UserObject.self)
