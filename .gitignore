@@ -1,1 +1,7 @@
+<<<<<<< HEAD
 challenge.xcodeproj/project.xcworkspace/xcuserdata/*
+=======
+challenge.xcodeproj/project.xcworkspace/xcuserdata/*
+Carthage/*
+Pods/*
+>>>>>>> develop

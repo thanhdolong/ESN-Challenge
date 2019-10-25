@@ -6,6 +6,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+<<<<<<< HEAD
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -32,6 +33,18 @@
             startingLineNumber = "78"
             endingLineNumber = "78"
             landmarkName = "didReceiveLocations(monitoringLocations:)"
+=======
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "challenge/Profile screen/Controllers/ProfileViewController.swift"
+            timestampString = "571679844.387265"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
+            landmarkName = "viewWillAppear(_:)"
+>>>>>>> develop
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
